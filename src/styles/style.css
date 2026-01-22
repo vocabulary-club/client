@@ -1,0 +1,9 @@
+/* Common radio button styles */
+.radio-item {
+    width: 100px;
+    border: 1px solid #cccc;
+}
+
+.radio-item:hover {
+    background-color: #cccc;
+}

@@ -17,27 +17,26 @@ class ApiService {
         return authHeader?.replace("Bearer ", "");
     };
 
-    static request = async (url, options = {}) => {
-        const token = await this.renewToken();
+    static request = async (url, { auth = true, ...options } = {}) => {
+        
+        let headers = {
+            "Content-Type": "application/json",
+            ...(options.headers || {}),
+        };
 
-        if (!token) {
-            throw new Error("No access token available");
+        if (auth) {
+            const token = await this.renewToken();
+            if (!token) throw new Error("Auth required");
+            headers.Authorization = `Bearer ${token}`;
         }
 
         const response = await fetch(`${process.env.REACT_APP_API_URL}${url}`, {
             ...options,
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                ...(options.headers || {}),
-                Authorization: `Bearer ${token}`,
-            },
+            credentials: auth ? "include" : "omit",
+            headers,
         });
 
-        if (!response.ok) {
-            throw new Error(`Request failed: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(response.status);
         return response;
     };
     
