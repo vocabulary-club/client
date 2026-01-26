@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 export default function MainLayout() {
     return (
-        <>
+        <div className="page-layout">
             <Header />
 
             <main>
@@ -12,6 +12,6 @@ export default function MainLayout() {
             </main>
 
             <Footer />
-        </>
+        </div>
     );
 }

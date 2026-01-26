@@ -1,9 +1,76 @@
-/* Common radio button styles */
-.radio-item {
-    width: 100px;
-    border: 1px solid #cccc;
+.toolbar { 
+    display: flex; 
+    gap: 8px; 
+    margin-bottom: 6px; 
+    padding-bottom: 6px; 
+    overflow-x: auto;
 }
 
-.radio-item:hover {
-    background-color: #cccc;
+.toolbar .radio-group {
+    display: flex;
+    gap: 8px;
+    margin: 0px 8px 0px 8px;
 }
+
+.toolbar .radio-group input {
+    display: none;
+}
+
+.toolbar .radio-group label {
+    background-color: #333c; 
+    color: #ffff; 
+    padding: 8px; 
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 80px;
+
+    display: flex;
+    align-items: center;      /* vertical center */
+    justify-content: center;  /* horizontal center */
+    text-align: center;
+}
+
+.toolbar .radio-group label.full-width {
+    width: 100%;
+}
+
+.radio-group label.more-height {
+    padding: 16px 8px 16px 8px;
+}
+
+.toolbar .radio-group input:checked + label {
+    background-color: #fffc;
+    color: #333c;
+}
+
+.toolbar .radio-group label:hover {
+    background-color: #333c; 
+    color: #fffc;
+}
+
+.toolbar .radio-group label:active {
+     background-color: #3333; 
+    color: #ffff; 
+}
+
+.table-wrapper { 
+    flex: 1; 
+    min-height: 0; 
+    height: 100%; 
+}
+.tabulator { height: 100% !important; }
+.tabulator .tabulator-footer .tabulator-page { color: #000f; }
+.tabulator .tabulator-cell { font-size: 18px; }
+.tabulator .tabulator-footer .tabulator-page-counter { display: none; }
+
+.word-wrapper { 
+    min-height: 0; 
+}
+.word { 
+    padding: 12px 16px; 
+    font-size: 48px; 
+}
+
+.show { display: block; }
+.hide { display: none; }
