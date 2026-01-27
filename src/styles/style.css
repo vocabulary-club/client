@@ -12,11 +12,16 @@
     margin: 0px 8px 0px 8px;
 }
 
-.toolbar .radio-group input {
+.word-wrapper .radio-group {
+    display: block;
+    margin: 0px 8px 0px 8px;
+}
+
+.radio-group input {
     display: none;
 }
 
-.toolbar .radio-group label {
+.radio-group label {
     background-color: #333c; 
     color: #ffff; 
     padding: 8px; 
@@ -31,26 +36,26 @@
     text-align: center;
 }
 
-.toolbar .radio-group label.full-width {
+.radio-group label.full-width {
     width: 100%;
 }
 
 .radio-group label.more-height {
-    padding: 16px 8px 16px 8px;
+    padding: 16px 0px 16px 0px;
 }
 
-.toolbar .radio-group input:checked + label {
+.radio-group input:checked + label {
     background-color: #fffc;
     color: #333c;
 }
 
-.toolbar .radio-group label:hover {
+.radio-group label:hover {
     background-color: #333c; 
     color: #fffc;
 }
 
-.toolbar .radio-group label:active {
-     background-color: #3333; 
+.radio-group label:active {
+    background-color: #3333; 
     color: #ffff; 
 }
 
@@ -69,8 +74,11 @@
 }
 .word { 
     padding: 12px 16px; 
-    font-size: 48px; 
 }
 
 .show { display: block; }
 .hide { display: none; }
+
+.font16 { font-size: 16px; }
+.font24 { font-size: 24px; }
+.font48 { font-size: 48px; }

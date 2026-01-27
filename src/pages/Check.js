@@ -51,7 +51,7 @@ export default function Check() {
             }            
 
         } else {
-            if(tableReady) { tabulatorRef.current.setData(finishedDataRef.current); }            
+            if(tableReady) { tabulatorRef.current.setData(finishedDataRef.current); }
             clearInterval(intervalIdRef.current);
             intervalIdRef.current = null;
 
@@ -199,10 +199,10 @@ export default function Check() {
             </div>
 
             <div className={`word-wrapper ${action === "stop" ? "hide" : ""}`}>
-                <div className="word">{engWord}</div>
-                <div className="word">{monWord}</div>
-                <div className="word">{regDate}</div>
-                <div className="word">{count}</div>
+                <div className="word font48">{engWord}</div>
+                <div className="word font48">{monWord}</div>
+                <div className="word font24">{regDate}</div>
+                <div className="word font24">{count}</div>
             </div>
 
             <div className={`table-wrapper ${action === "start" ? "hide" : ""}`}>
