@@ -30,11 +30,30 @@ export default function Manage() {
     
     const handleCancel = (e) => {
         e.preventDefault(); 
-        setModal(false);
+        tabulatorRef.current.deselectRow();
+        tabulatorRef.current.clearFilter();
     }
     
     const handleDelete = (e) => {
         e.preventDefault(); 
+        const selected = tabulatorRef.current.getSelectedData();
+        if(selected.length) {
+            if(window.confirm("Are you sure to delete?")) {
+                const data = {
+                    dic_id : selected[0].dic_id,
+                    eng_id : selected[0].eng_id,
+                    mon_id : selected[0].mon_id,
+                };
+                ApiService.request("/api/manage/delete", {
+                    auth: false,
+                    method: "POST",
+                    body: JSON.stringify(data),
+                })
+                .then((response) => response.json())
+                .then((data) => { getData(); })
+                .catch((error) => { alert("Failed to save."); });
+            }
+        }
     }
 
     const handleModalSave = (e) => {
@@ -102,10 +121,10 @@ export default function Manage() {
 
                         <input type="text" id="inSearch" placeholder="Search input"/>
 
-                        <button className="toolbar-btn" onClick={(e) => handleCreate(e) }>Create</button>
-                        <button className="toolbar-btn" onClick={(e) => handleUpdate(e) }>Update</button>
-                        <button className="toolbar-btn" onClick={(e) => handleCancel(e) }>Cancel</button>
-                        <button className="toolbar-btn" onClick={(e) => handleDelete(e) }>Delete</button>
+                        <button onClick={(e) => handleCreate(e) }>Create</button>
+                        <button onClick={(e) => handleUpdate(e) }>Update</button>
+                        <button onClick={(e) => handleCancel(e) }>Cancel</button>
+                        <button onClick={(e) => handleDelete(e) }>Delete</button>
 
                     </div>
 
