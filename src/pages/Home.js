@@ -10,6 +10,41 @@ export default function Home() {
     const tabulatorRef = React.useRef(null);
 
     React.useEffect(() => {
+        
+        initTable();
+
+        return () => {
+            tabulatorRef.current?.destroy();
+            tabulatorRef.current = null;
+        };
+    }, []);
+
+    React.useEffect(() => {
+        
+        getData();
+
+    }, [dayVal]);
+
+    const getData = () => {
+
+        const data = { "day" : dayVal, };
+        ApiService.request("/", {
+            auth: false,
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((data) => {         
+                tabulatorRef.current.setData(data);
+            })
+            .catch((error) => {
+                console.error("Request failed:", error.message);
+            });
+    };
+
+    const initTable = () => {
+        if (!tableRef.current) return;
+
         tabulatorRef.current = new Tabulator(tableRef.current, {
             selectableRows:1,
             layout:"fitColumns",
@@ -31,51 +66,23 @@ export default function Home() {
                 {title:"Mongolian", field:"mon_word", },
             ],
         });
+
         tabulatorRef.current.on("tableBuilt", function(){
-            fetchData();
+            getData();
         });
-
-        return () => {
-            tabulatorRef.current?.destroy();
-        };
-    }, []);
-
-    React.useEffect(() => {
-        fetchData();
-    }, [dayVal]);
-
-    const fetchData = () => {
-
-        const data = { "day" : dayVal, };
-        ApiService.request("/", {
-            auth: false,
-            method: "POST",
-            body: JSON.stringify(data)
-        })
-            .then((response) => response.json())
-            .then((data) => {         
-                tabulatorRef.current.setData(data);
-            })
-            .catch((error) => {
-                console.error("Request failed:", error.message);
-            });
-    };
-
-    const handleDayChanged = (e) => {
-        setDayVal(e.target.value);
     };
     
     return (
         <div className="content-layout">
             <div className="toolbar">
                 <div className="radio-group">
-                    <input type="radio" id="last" name="day" value="last" onChange={(e)=>handleDayChanged(e)} defaultChecked />
+                    <input type="radio" id="last" name="day" value="last" checked={dayVal === "last"} onChange={(e) => setDayVal(e.target.value)} />
                     <label htmlFor="last">Last Day</label>
 
-                    <input type="radio" id="secondLast" name="day" value="second last" onChange={(e)=>handleDayChanged(e)} />
+                    <input type="radio" id="secondLast" name="day" value="second last" checked={dayVal === "second last"} onChange={(e) => setDayVal(e.target.value)} />
                     <label htmlFor="secondLast">A Day Before</label>
 
-                    <input type="radio" id="thirdLast" name="day" value="third last" onChange={(e)=>handleDayChanged(e)} />
+                    <input type="radio" id="thirdLast" name="day" value="third last" checked={dayVal === "third last"} onChange={(e) => setDayVal(e.target.value)} />
                     <label htmlFor="thirdLast">2 Days Before</label>
                 </div>
             </div>
