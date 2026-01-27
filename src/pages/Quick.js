@@ -233,16 +233,16 @@ export default function Quick() {
                 <br />
                 <div className="radio-group">
                     <input type="radio" id="answer0" name="answer" value="0" checked={answer === "0"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer0" className='full-width more-height'>{answer0}</label>
+                    <label htmlFor="answer0" className='full-width'>{answer0}</label>
                     <br />
                     <input type="radio" id="answer1" name="answer" value="1" checked={answer === "1"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer1" className='full-width more-height'>{answer1}</label>
+                    <label htmlFor="answer1" className='full-width'>{answer1}</label>
                     <br />
                     <input type="radio" id="answer2" name="answer" value="2" checked={answer === "2"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer2" className='full-width more-height'>{answer2}</label>
+                    <label htmlFor="answer2" className='full-width'>{answer2}</label>
                     <br />
                     <input type="radio" id="answer3" name="answer" value="3" checked={answer === "3"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer3" className='full-width more-height'>{answer3}</label>
+                    <label htmlFor="answer3" className='full-width'>{answer3}</label>
                 </div>
                 <div className="word font24">{regDate}</div>
                 <div className="word font24">{count}</div>
