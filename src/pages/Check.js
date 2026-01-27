@@ -4,10 +4,10 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
 
 export default function Check() {
 
-    const [originData, setOriginData] = React.useState([]);
-    const [shuffledData, setShuffledData] = React.useState([]);
-    const [finishedData, setFinishedData] = React.useState([]);
-    const [shuffledIndex, setShuffledIndex] = React.useState(0);
+    const originDataRef = React.useRef([]);
+    const shuffledDataRef = React.useRef([]);
+    const finishedDataRef = React.useRef([]);
+    const shuffledIdxRef = React.useRef(0);
 
     const [action, setAction] = React.useState("stop");          // start, stop
     const [limit, setLimit] = React.useState("rand 10");    // last 10, rand 10, last 50, rand 50
@@ -21,91 +21,101 @@ export default function Check() {
 
     const tableRef = React.useRef(null);
     const tabulatorRef = React.useRef(null);
+    const intervalIdRef = React.useRef(null);
 
-    // for interval
-
-    const [delay, setDelay] = React.useState(1000); // ms
-    const [isRunning, setIsRunning] = React.useState(false);
+    const [tableReady, setTableReady] = React.useState(false);
 
     React.useEffect(() => {
-
-        fetchData();
-
-        tabulatorRef.current = new Tabulator(tableRef.current, {
-            selectableRows:1,
-            layout:"fitColumns",
-            history:true,
-            pagination: false,
-			columnDefaults:{
-                tooltip:true,         //show tool tips on cells
-            },
-            columns:[
-                {
-                    formatter: "rowSelection", 
-                    hozAlign: "center",
-                    headerSort: false,
-                    frozen: true,
-                    headerHozAlign: "center",
-                    width: 32,
-                },
-                {title:"English", field:"eng_word", },
-                {title:"Mongolian", field:"mon_word", },
-            ],
-        });
-        tabulatorRef.current.on("tableBuilt", function(){ });
+        getData();
+        initTable();
 
         return () => {
             tabulatorRef.current?.destroy();
+            tabulatorRef.current = null;
         };
     }, []);
 
     React.useEffect(() => {
+        if (action === "start") {
+            
+            reShuffle();
 
-        setEngWord("");
-        setMonWord("");
-        setRegDate("");
-        setCount("");
-       
-        if(action === "start") {
-            if(limit.includes("last 10")) {
-                setShuffledData(shuffle(originData.slice(0, 10)));
-            } else if(limit.includes("last 50")) {
-                setShuffledData(shuffle(originData.slice(0, 50)));
-            } else if(limit.includes("rand 10")) {
-                setShuffledData(shuffle(originData).slice(0, 10));
-            } else if(limit.includes("rand 50")) {
-                setShuffledData(shuffle(originData).slice(0, 50));
-            }
-            setFinishedData([]);
-            setShuffledIndex(0);            
-            setDelay(time * 1000);
-            setIsRunning(true);
+            finishedDataRef.current = [];
+            shuffledIdxRef.current = 0;
+
+            myTask();
+            if (!intervalIdRef.current) {
+                intervalIdRef.current = setInterval(() => { 
+                    myTask(); 
+                }, time * 1000);
+            }            
+
         } else {
-            setShuffledData([]);
-            setFinishedData([]);
-            setShuffledIndex(0);
-            setIsRunning(false);  
+            if(tableReady) { tabulatorRef.current.setData(finishedDataRef.current); }            
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+
+        }
+
+        return () => {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
         }
 
     }, [action]);
 
-    const fetchData = () => {
+    const myTask = () => {
+    
+        const currIndex = shuffledIdxRef.current;
+        if (currIndex >= shuffledDataRef.current.length) {
+            setAction("stop");
+            return ;
+        }
 
+        const currData = shuffledDataRef.current[currIndex];
+
+        if (lang === "eng") {
+            setEngWord(currData?.eng_word || "");
+            setMonWord("");
+        } else {
+            setEngWord("");
+            setMonWord(currData?.mon_word || "");
+        }
+
+        setRegDate(currData?.reg_date || "");
+        setCount(`${currIndex + 1} / ${shuffledDataRef.current.length}`);
+        finishedDataRef.current = [...finishedDataRef.current, currData];
+        shuffledIdxRef.current = currIndex + 1;
+
+    }
+
+    const getData = () => {
         ApiService.request("/api/check/select", {
             auth: false,
             method: "GET",
         })
             .then((response) => response.json())
             .then((data) => {                              
-                setOriginData(data);
-                console.log(data);  
+                originDataRef.current = data;
             })
             .catch((error) => {
                 console.error("Request failed:", error.message);
             });
     };
 
-    const shuffle = data => {
+    const reShuffle = () => {
+        if (limit.includes("last 10")) {
+            shuffledDataRef.current = shuffle(originDataRef.current.slice(0, 10));
+        } else if(limit.includes("last 50")) {
+            shuffledDataRef.current = shuffle(originDataRef.current.slice(0, 50));
+        } else if(limit.includes("rand 10")) {
+            shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 10);
+        } else if(limit.includes("rand 50")) {
+            shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 50);
+        }
+    }
+
+    const shuffle = (data) => {
         const copy = [...data];
         for (let i = copy.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -114,68 +124,45 @@ export default function Check() {
         return copy;
     };
 
-    const myTask = React.useCallback(() => {
-        setShuffledIndex((prevIndex) => {
-            if (action === "stop" || prevIndex >= shuffledData.length) {
-                tabulatorRef.current.setData(finishedData);
-                setIsRunning(false);
-                setAction("stop");                
-                return prevIndex;
-            }
+    const initTable = () => {
+        if (!tableRef.current) return;
 
-            const current = shuffledData[prevIndex];
-
-            if (lang === "eng") {
-                setEngWord(current?.eng_word || "");
-                setMonWord("");
-            } else {
-                setEngWord("");
-                setMonWord(current?.mon_word || "");
-            }
-
-            setRegDate(current?.reg_date || "");
-            setCount(`${prevIndex + 1} / ${shuffledData.length}`);
-
-            setFinishedData((prev) => [...prev, current]);
-
-            return prevIndex + 1;
+        tabulatorRef.current = new Tabulator(tableRef.current, {
+            selectableRows: 1,
+            layout: "fitColumns",
+            history: true,
+            pagination: false,
+            columnDefaults: {
+                tooltip: true,
+            },
+            columns: [
+                {
+                    formatter: "rowSelection",
+                    hozAlign: "center",
+                    headerSort: false,
+                    frozen: true,
+                    headerHozAlign: "center",
+                    width: 32,
+                },
+                { title: "English", field: "eng_word" },
+                { title: "Mongolian", field: "mon_word" },
+            ],
         });
-    }, [action, shuffledData, lang]);
 
-    React.useEffect(() => {
-        if (!isRunning) {
-            return;
-        }
-        
-        myTask();
-
-        const id = setInterval(myTask, delay);
-        return () => clearInterval(id);
-
-    }, [isRunning, delay, myTask]);
-
-    React.useEffect(() => {
-        if (isRunning) return;
-        if (!tabulatorRef.current) return;
-        if (finishedData.length === 0) return;
-
-        // wait until table is visible in DOM
-        requestAnimationFrame(() => {
-            tabulatorRef.current.setData(finishedData);
-            tabulatorRef.current.redraw(true);
+        tabulatorRef.current.on("tableBuilt", () => { 
+            setTableReady(true);
         });
-    }, [isRunning, finishedData]);
-
+    };
 
     return (
         <div className="content-layout">
             <div className="toolbar">
             
                 <div className="radio-group">
-                    <input type="radio" id="start" name="action" value="start" checked={action === "start"} onChange={(e) => setAction(e.target.value)} />
+                    <input type="radio" id="start" name="action" value="start" checked={action === "start"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady} />
                     <label htmlFor="start">Start</label>
 
-                    <input type="radio" id="stop" name="action" value="stop" checked={action === "stop"} onChange={(e)=>setAction(e.target.value)} />
+                    <input type="radio" id="stop" name="action" value="stop" checked={action === "stop"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady}/>
                     <label htmlFor="stop">Stop</label>
                 </div>
 
@@ -183,13 +170,13 @@ export default function Check() {
                     <input type="radio" id="lastTen" name="limit" value="last 10" checked={limit === "last 10"} onChange={(e) => setLimit(e.target.value)} />
                     <label htmlFor="lastTen">Last 10</label>
 
-                    <input type="radio" id="randTen" name="limit" value="rand 10" checked={limit === "rand 10"} onChange={(e)=>setLimit(e.target.value)} />
+                    <input type="radio" id="randTen" name="limit" value="rand 10" checked={limit === "rand 10"} onChange={(e)=> setLimit(e.target.value)} />
                     <label htmlFor="randTen">Rand 10</label>
 
-                    <input type="radio" id="lastFifty" name="limit" value="last 50" checked={limit === "last 50"} onChange={(e)=>setLimit(e.target.value)} />
+                    <input type="radio" id="lastFifty" name="limit" value="last 50" checked={limit === "last 50"} onChange={(e)=> setLimit(e.target.value)} />
                     <label htmlFor="lastFifty">Last 50</label>
 
-                    <input type="radio" id="randFifty" name="limit" value="rand 50" checked={limit === "rand 50"} onChange={(e)=>setLimit(e.target.value)} />
+                    <input type="radio" id="randFifty" name="limit" value="rand 50" checked={limit === "rand 50"} onChange={(e)=> setLimit(e.target.value)} />
                     <label htmlFor="randFifty">Rand 50</label>
                 </div>
 
@@ -197,7 +184,7 @@ export default function Check() {
                     <input type="radio" id="eng" name="lang" value="eng" checked={lang === "eng"} onChange={(e) => setLang(e.target.value)} />
                     <label htmlFor="eng">Eng</label>
 
-                    <input type="radio" id="mon" name="lang" value="mon" checked={lang === "mon"} onChange={(e)=>setLang(e.target.value)} />
+                    <input type="radio" id="mon" name="lang" value="mon" checked={lang === "mon"} onChange={(e)=> setLang(e.target.value)} />
                     <label htmlFor="mon">Mon</label>
                 </div>
 
@@ -211,14 +198,14 @@ export default function Check() {
 
             </div>
 
-            <div className={`table-wrapper ${!isRunning ? "hide" : ""}`}>
+            <div className={`word-wrapper ${action === "stop" ? "hide" : ""}`}>
                 <div className="word">{engWord}</div>
                 <div className="word">{monWord}</div>
                 <div className="word">{regDate}</div>
                 <div className="word">{count}</div>
             </div>
 
-            <div className={`table-wrapper ${isRunning ? "hide" : ""}`}>
+            <div className={`table-wrapper ${action === "start" ? "hide" : ""}`}>
                 <div ref={tableRef} />
             </div>
 

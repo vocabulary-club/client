@@ -59,7 +59,7 @@
     min-height: 0; 
     height: 100%; 
 }
-.tabulator { height: 100% !important; }
+.tabulator { height: 100% !important; width: 100%; }
 .tabulator .tabulator-footer .tabulator-page { color: #000f; }
 .tabulator .tabulator-cell { font-size: 18px; }
 .tabulator .tabulator-footer .tabulator-page-counter { display: none; }
