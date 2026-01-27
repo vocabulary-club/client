@@ -2,12 +2,23 @@ import React from 'react';
 import ApiService from "../services/ApiService";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import { Modal, Box, Typography, TextField, Button, Stack } from "@mui/material";
+
 export default function Manage() {
 
     const tableRef = React.useRef(null);
     const tabulatorRef = React.useRef(null);
 
-    const [modal, setModal] = React.useState(false);
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const [modalTitle, setModalTitle] = React.useState("Add new word?");
+
+    const [firstWord, setFirstWord] = React.useState("");
+    const [secondWord, setSecondWord] = React.useState("");
+
+    const updateRef = React.useRef(0);
 
     React.useEffect(() => {
         initTable();
@@ -20,16 +31,35 @@ export default function Manage() {
     
     const handleCreate = (e) => {
         e.preventDefault();
-        setModal(true);
+
+        tabulatorRef.current.deselectRow();
+        tabulatorRef.current.clearFilter();
+
+        setFirstWord("");
+        setSecondWord("");
+        setModalTitle("Add new word?");
+        setModalOpen(true);
+
+        updateRef.current = 0;
     }
     
     const handleUpdate = (e) => {
         e.preventDefault();
-        setModal(true);
+
+        const selected = tabulatorRef.current.getSelectedData();
+        if(selected.length) {
+            setFirstWord(selected[0].eng_word);
+            setSecondWord(selected[0].mon_word);
+            setModalTitle("Update old word?");
+            setModalOpen(true);
+
+            updateRef.current = 1;
+        }
     }
     
     const handleCancel = (e) => {
         e.preventDefault(); 
+        
         tabulatorRef.current.deselectRow();
         tabulatorRef.current.clearFilter();
     }
@@ -51,19 +81,42 @@ export default function Manage() {
                 })
                 .then((response) => response.json())
                 .then((data) => { getData(); })
-                .catch((error) => { alert("Failed to save."); });
+                .catch((error) => { alert("Failed to delete."); });
             }
         }
     }
 
     const handleModalSave = (e) => {
         e.preventDefault(); 
-        setModal(false);
-    }
 
-    const handleModalCancel = (e) => {
-        e.preventDefault(); 
-        setModal(false);
+        if(!firstWord || !secondWord) {
+            alert("Enter your words!");
+            return;
+        }
+
+        const data = {
+            eng_word : firstWord,
+            mon_word : secondWord,
+        };
+
+        let url = "/create";
+        if(updateRef.current == 1) { 
+            url = "/update"; 
+            const selected = tabulatorRef.current.getSelectedData();
+            data.eng_id = selected[0].eng_id;
+            data.mon_id = selected[0].mon_id;
+        }
+
+        ApiService.request("/api/manage" + url, {
+            auth: false,
+            method: "POST",
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.json())
+        .then((data) => { getData(); })
+        .catch((error) => { alert("Failed to save."); });
+
+        setModalOpen(false);
     }
 
     const getData = () => {
@@ -114,52 +167,62 @@ export default function Manage() {
     return (
         <div className="content-layout">
 
-            <div className="content-wrapper-layout">
-                <div className="content-wrapper">
+            <div className="toolbar">
 
-                    <div className="toolbar">
+                <input type="text" id="inSearch" placeholder="Search input"/>
+                
+                <button onClick={(e) => handleCreate(e) }>Create</button>
+                <button onClick={(e) => handleUpdate(e) }>Update</button>
+                <button onClick={(e) => handleCancel(e) }>Cancel</button>
+                <button onClick={(e) => handleDelete(e) }>Delete</button>
 
-                        <input type="text" id="inSearch" placeholder="Search input"/>
-
-                        <button onClick={(e) => handleCreate(e) }>Create</button>
-                        <button onClick={(e) => handleUpdate(e) }>Update</button>
-                        <button onClick={(e) => handleCancel(e) }>Cancel</button>
-                        <button onClick={(e) => handleDelete(e) }>Delete</button>
-
-                    </div>
-
-                    <div className="table-wrapper">
-                        <div ref={tableRef} />
-                    </div>
-
-                </div>
-
-                {modal && 
-                    <div className="modal-wrapper">
-                        <div className="modal">
-                            <div className="modal-body">
-                                <div className="modal-header">
-                                    <h3>Create Vocabulary</h3>
-                                </div>
-                                <div className="modal-content">
-                                    <div>
-                                        <input type="text" placeholder="Input English"/>
-                                    </div>
-                                    <br/>                                 
-                                    <div>
-                                        <input type="text" placeholder="Input Mongolian"/>
-                                    </div>                                    
-                                </div>
-                                <div className="modal-footer">
-                                    <button onClick={(e) => handleModalSave(e) }>Save</button>
-                                    <button onClick={(e) => handleModalCancel(e) }>Cancel</button>
-                                </div>
-                            </div>					
-                        </div>
-                    </div>
-                }
+                <DeleteIcon
+                    onClick={(e) => handleDelete(e)}
+                    color="error"
+                    sx={{
+                        fontSize: 32,
+                        cursor: "pointer",
+                        "&:hover": { transform: "scale(1.1)" },
+                        "&:active": { transform: "scale(0.9)" },
+                    }}
+                />
 
             </div>
+
+            <div className="table-wrapper">
+                <div ref={tableRef} />
+            </div>
+
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+                <Box
+                    sx={{
+                        width: 256,
+                        bgcolor: "background.paper",
+                        p: 3,
+                        borderRadius: 2,
+                        m: "auto",
+                        mt: "20%",
+                    }}
+                >
+                {/* Title */}
+                <Typography variant="h6" mb={2}>
+                    {modalTitle}
+                </Typography>
+
+                {/* Inputs */}
+                <Stack spacing={2}>
+                    <TextField placeholder="English" fullWidth value={firstWord} onChange={(e) => setFirstWord(e.target.value)} autoFocus />
+                    <TextField placeholder="Mongolian" fullWidth value={secondWord} onChange={(e) => setSecondWord(e.target.value)}/>
+                </Stack>
+
+                {/* Buttons */}
+                <Stack direction="row" spacing={2} mt={3} justifyContent="flex-end">
+                    <Button onClick={() => setModalOpen(false)}>Cancel</Button>
+                    <Button variant="contained" onClick={(e) => handleModalSave(e)}>Save</Button>
+                </Stack>
+                </Box>
+            </Modal>
+
         </div>
     );  
         
