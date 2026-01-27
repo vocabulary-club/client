@@ -20,11 +20,7 @@ function App() {
 
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/check" element={<Check />} />
-                    <Route path="/quick" element={<Quick />} />
-                    <Route path="/test" element={<Test />} />
-                    <Route path="/manage" element={<Manage />} />
-                    {/* <Route
+                    <Route
                         path="/check"
                         element={
                             <ProtectedRoute>
@@ -55,7 +51,7 @@ function App() {
                                 <Manage />
                             </ProtectedRoute>
                         }
-                    /> */}
+                    />
                 </Route>
 
             </Routes>

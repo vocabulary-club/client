@@ -108,7 +108,6 @@ export default function Quick() {
 
     const getData = () => {
         ApiService.request("/api/check/select", {
-            auth: false,
             method: "GET",
         })
             .then((response) => response.json())

@@ -120,7 +120,6 @@ export default function Test() {
 
     const getData = () => {
         ApiService.request("/api/check/select", {
-            auth: false,
             method: "GET",
         })
             .then((response) => response.json())

@@ -75,7 +75,6 @@ export default function Manage() {
                     mon_id : selected[0].mon_id,
                 };
                 ApiService.request("/api/manage/delete", {
-                    auth: false,
                     method: "POST",
                     body: JSON.stringify(data),
                 })
@@ -108,7 +107,6 @@ export default function Manage() {
         }
 
         ApiService.request("/api/manage" + url, {
-            auth: false,
             method: "POST",
             body: JSON.stringify(data),
         })
@@ -121,7 +119,6 @@ export default function Manage() {
 
     const getData = () => {
         ApiService.request("/api/manage/select", {
-            auth: false,
             method: "GET",
         })
             .then((response) => response.json())
