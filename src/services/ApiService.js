@@ -1,5 +1,10 @@
 class ApiService {
     static apiUrl = process.env.REACT_APP_API_URL;  
+    static onAuthFail = null;
+
+    static setAuthFailHandler(handler) {
+        this.onAuthFail = handler;
+    }
 
     static renewToken = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/token/renew`, {
@@ -26,7 +31,10 @@ class ApiService {
 
         if (auth) {
             const token = await this.renewToken();
-            if (!token) throw new Error("Auth required");
+            if (!token) {
+                this.onAuthFail?.();
+                throw new Error("Auth required");
+            }
             headers.Authorization = `Bearer ${token}`;
         }
 

@@ -24,7 +24,7 @@ export default function User() {
             console.log(data);
         } catch (err) {
             console.error(err);
-            navigate("/login");   
+            navigate("/login");
         }
     };
 

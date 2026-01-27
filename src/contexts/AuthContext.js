@@ -1,3 +1,4 @@
+import React from 'react';
 import { createContext, useContext, useState } from "react";
 import ApiService from "../services/ApiService";
 
@@ -18,6 +19,11 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
         }
     };
+    const onAuthFail = () => setUser(null);
+
+    React.useEffect(() => {
+        ApiService.setAuthFailHandler(onAuthFail);
+    }, []);
 
     return (
         <AuthContext.Provider value={{ user, login, logout }}>
