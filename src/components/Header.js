@@ -26,6 +26,10 @@ export default function Header() {
             <div onClick={() => navigate("/manage", { replace: true })}>
                 <Link to="/manage">Manage</Link>
             </div>
+            |
+            <div onClick={() => navigate("/user", { replace: true })}>
+                <Link to="/user">User</Link>
+            </div>
         </header>
     );
 }

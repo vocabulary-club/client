@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Box, Button, TextField, Typography, Paper, Alert } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../services/ApiService";
@@ -46,34 +47,53 @@ export default function Login() {
     };
 
     return (
-        <div style={{ maxWidth: "400px", margin: "2rem auto" }}>
-            <h1>Login</h1>
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                bgcolor: "#f5f5f5",
+                pt: 8,
+            }}
+            >
+            <Paper sx={{ p: 4, width: 360 }} elevation={3}>
+                <Typography variant="h5" textAlign="center" mb={2}>
+                    Login
+                </Typography>
 
-            <form onSubmit={onLogin}>
-                <div>
-                    <label>Username</label>
-                    <input
-                        type="text"
+                {error && <Alert severity="error">{error}</Alert>}
+
+                <Box component="form" onSubmit={onLogin} mt={2}>
+                    <TextField
+                        label="Username"
+                        fullWidth
+                        margin="normal"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
-                </div>
 
-                <div>
-                    <label>Password</label>
-                    <input
+                    <TextField
+                        label="Password"
                         type="password"
+                        fullWidth
+                        margin="normal"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                </div>
 
-                {error && <p style={{ color: "red" }}>{error}</p>}
-
-                <button type="submit">Login</button>
-            </form>
-        </div>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    >
+                        Login
+                    </Button>
+                </Box>
+            </Paper>
+        </Box>
     );
 }
