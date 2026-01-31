@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
             try {
                 const response = await ApiService.request("/api/user", { method: "GET", });
                 const data = await response.json();       
-                setUser({ name: data.username });
+                setUser({ name: data.name });
             } catch (err) {
                 setUser(null);
             } finally {

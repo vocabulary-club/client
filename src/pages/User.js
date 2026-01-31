@@ -22,7 +22,8 @@ export default function User() {
                 <Paper sx={{ p: 4, width: 420 }} elevation={3}>
                     <Stack direction="row" spacing={2} justifyContent="space-between">
                         <Typography variant="body1" mb={3}>
-                            My username is <strong>{user?.name}.</strong>
+                            My username is <br/>
+                            <strong>{user?.name}.</strong>
                         </Typography>
 
                         <IconButton
