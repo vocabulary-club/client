@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Box, IconButton, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import SettingsIcon from "@mui/icons-material/Settings";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { languages, currLang } from "./Language";
+
+const t = languages[currLang];
 
 const MenuItem = ({ icon, label, onClick }) => {
     return (
@@ -76,7 +78,7 @@ export default function Footer() {
                     sx={{
                         height: 48,
                         minHeight: "48px !important",
-                        justifyContent: "flex-start",
+                        justifyContent: "center",
                         alignItems: "center",
                         px: 1,
                         overflow: "hidden",
@@ -91,10 +93,10 @@ export default function Footer() {
                             height: "100%",
                         }}
                     >
-                        <MenuItem icon={<HomeIcon />} label="Home" onClick={() => handleClick("home")} />
-                        <MenuItem icon={<MenuBookIcon />} label="Test" onClick={() => handleClick("test")} />
-                        <MenuItem icon={<AddCircleOutlineIcon />} label="Add" onClick={() => handleClick("add")} />
-                        <MenuItem icon={<SettingsIcon />} label="Settings" onClick={() => handleClick("settings")} />
+                        <MenuItem icon={<HomeIcon />} label={t.home} onClick={() => handleClick("home")} />
+                        <MenuItem icon={<MenuBookIcon />} label={t.study} onClick={() => handleClick("test")} />
+                        <MenuItem icon={<PostAddIcon />} label={t.word} onClick={() => handleClick("add")} />
+                        <MenuItem icon={<SettingsIcon />} label={t.settings} onClick={() => handleClick("settings")} />
                     </Box>
                 </Toolbar>
             </AppBar>
