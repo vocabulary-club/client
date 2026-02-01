@@ -7,6 +7,7 @@ import Quick from "./pages/Quick";
 import Test from "./pages/Test";
 import Manage from "./pages/Manage";
 import User from "./pages/User";
+import Settings from "./pages/Settings";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 import MainLayout from "./layouts/MainLayout";
@@ -56,6 +57,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <User />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings"
+                        element={
+                            <ProtectedRoute>
+                                <Settings />
                             </ProtectedRoute>
                         }
                     />

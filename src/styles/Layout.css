@@ -47,9 +47,6 @@ main .content-layout {
 
 footer { 
     height: 48px; 
-    display: flex;
-    align-items: center;
-    justify-content: left;
 }
 
 footer p {
