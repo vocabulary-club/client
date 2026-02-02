@@ -1,15 +1,15 @@
 export const languages = {
     en: {
         home: "Home",
-        study: "Study",
-        word: "New Word",
-        settings: "Settings",
+        test1: "Test 1",
+        test2: "Test 2",
+        newWord: "New Word",
     },
     mn: {
         home: "Эхлэл",
-        study: "Сурах",
-        word: "Шинэ Үг",
-        settings: "Тохиргоо",
+        test1: "Test 1",       
+        test2: "Test 2",
+        newWord: "Шинэ Үг",
     },
 };
 

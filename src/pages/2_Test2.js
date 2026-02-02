@@ -2,7 +2,7 @@ import React from 'react';
 import ApiService from "../services/ApiService";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 
-export default function Check() {
+export default function Test2() {
 
     const originDataRef = React.useRef([]);
     const shuffledDataRef = React.useRef([]);
@@ -12,16 +12,20 @@ export default function Check() {
     const [action, setAction] = React.useState("stop");          // start, stop
     const [limit, setLimit] = React.useState("rand 10");    // last 10, rand 10, last 50, rand 50
     const [lang, setLang] = React.useState("eng");          // eng, mon
-    const [time, setTime] = React.useState(3);               // 2, 3
 
-    const [engWord, setEngWord] = React.useState("");
-    const [monWord, setMonWord] = React.useState("");
+    const [question, setQuestion] = React.useState("");
+    const [answer, setAnswer] = React.useState(null);
+    
+    const [answer0, setAnswer0] = React.useState("answer1");
+    const [answer1, setAnswer1] = React.useState("answer2");
+    const [answer2, setAnswer2] = React.useState("answer3");
+    const [answer3, setAnswer3] = React.useState("answer4");
+
     const [regDate, setRegDate] = React.useState("");
     const [count, setCount] = React.useState("");
 
     const tableRef = React.useRef(null);
     const tabulatorRef = React.useRef(null);
-    const intervalIdRef = React.useRef(null);
 
     const [tableReady, setTableReady] = React.useState(false);
 
@@ -43,28 +47,35 @@ export default function Check() {
             finishedDataRef.current = [];
             shuffledIdxRef.current = 0;
 
-            myTask();
-            if (!intervalIdRef.current) {
-                intervalIdRef.current = setInterval(() => { 
-                    myTask(); 
-                }, time * 1000);
-            }            
+            myNext();       
 
         } else {
+
             if(tableReady) { tabulatorRef.current.setData(finishedDataRef.current); }
-            clearInterval(intervalIdRef.current);
-            intervalIdRef.current = null;
 
         }
 
-        return () => {
-            clearInterval(intervalIdRef.current);
-            intervalIdRef.current = null;
-        }
-
+        return () => { }
     }, [action]);
 
-    const myTask = () => {
+    const handleAnswer = (value) => {
+
+        const answer = shuffledDataRef.current[shuffledIdxRef.current - 1].answer[parseInt(value, 10)];
+        
+        if(answer.dic_id == shuffledDataRef.current[shuffledIdxRef.current - 1].dic_id) {
+            if(!finishedDataRef.current[shuffledIdxRef.current - 1].result) {
+                finishedDataRef.current[shuffledIdxRef.current - 1].result = "correct";					
+            }
+        } else {
+            if(!finishedDataRef.current[shuffledIdxRef.current - 1].result) {
+                finishedDataRef.current[shuffledIdxRef.current - 1].result = "wrong";
+            }
+        }
+
+        myNext();
+    }
+
+    const myNext = () => {
     
         const currIndex = shuffledIdxRef.current;
         if (currIndex >= shuffledDataRef.current.length) {
@@ -75,11 +86,17 @@ export default function Check() {
         const currData = shuffledDataRef.current[currIndex];
 
         if (lang === "eng") {
-            setEngWord(currData?.eng_word || "");
-            setMonWord("");
+            setQuestion(currData?.eng_word || "");
+            setAnswer0(currData?.answer[0]?.mon_word || "");
+            setAnswer1(currData?.answer[1]?.mon_word || "");
+            setAnswer2(currData?.answer[2]?.mon_word || "");
+            setAnswer3(currData?.answer[3]?.mon_word || "");            
         } else {
-            setEngWord("");
-            setMonWord(currData?.mon_word || "");
+            setQuestion(currData?.mon_word || "");
+            setAnswer0(currData?.answer[0]?.eng_word || "");
+            setAnswer1(currData?.answer[1]?.eng_word || "");
+            setAnswer2(currData?.answer[2]?.eng_word || "");
+            setAnswer3(currData?.answer[3]?.eng_word || "");
         }
 
         setRegDate(currData?.reg_date || "");
@@ -90,7 +107,7 @@ export default function Check() {
     }
 
     const getData = () => {
-        ApiService.request("/api/check/select", {
+        ApiService.request("/api/test/select", {
             method: "GET",
         })
             .then((response) => response.json())
@@ -112,6 +129,19 @@ export default function Check() {
         } else if(limit.includes("rand 50")) {
             shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 50);
         }
+
+        shuffledDataRef.current.forEach((item, index) => {
+
+            let answer = shuffle(originDataRef.current).slice(0, 4);            
+            if(answer.find((x) => x.dic_id === item.dic_id)) {
+                
+            } else{
+                answer = answer.slice(0, 3);
+                answer.push(item);
+                answer = shuffle(answer);
+            }
+            item.answer = answer;
+        });
     }
 
     const shuffle = (data) => {
@@ -134,6 +164,14 @@ export default function Check() {
             columnDefaults: {
                 tooltip: true,
             },
+            rowFormatter: function (row) {
+				const data = row.getData();
+				if (data.result === "correct") {
+					row.getElement().style.backgroundColor = "#4f44"; // green
+				} else if (data.result === "wrong") {
+					row.getElement().style.backgroundColor = "#f444"; // red
+				}
+			},
             columns: [
                 {
                     formatter: "rowSelection",
@@ -148,7 +186,7 @@ export default function Check() {
             ],
         });
 
-        tabulatorRef.current.on("tableBuilt", () => { 
+        tabulatorRef.current.on("tableBuilt", () => {  
             setTableReady(true);
         });
     };
@@ -161,7 +199,7 @@ export default function Check() {
                     <input type="radio" id="start" name="action" value="start" checked={action === "start"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady} />
                     <label htmlFor="start">Start</label>
 
-                    <input type="radio" id="stop" name="action" value="stop" checked={action === "stop"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady}/>
+                    <input type="radio" id="stop" name="action" value="stop" checked={action === "stop"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady} />
                     <label htmlFor="stop">Stop</label>
                 </div>
 
@@ -187,19 +225,24 @@ export default function Check() {
                     <label htmlFor="mon">Mon</label>
                 </div>
 
-                <div className="radio-group">
-                    <input type="radio" id="two" name="time" value={2} checked={time === 2} onChange={() => setTime(2)} />
-                    <label htmlFor="two">2 sec</label>
-
-                    <input type="radio" id="three" name="time" value={3} checked={time === 3} onChange={() => setTime(3)} />
-                    <label htmlFor="three">3 sec</label>
-                </div>
-
             </div>
 
             <div className={`word-wrapper ${action === "stop" ? "hide" : ""}`}>
-                <div className="word font48">{engWord}</div>
-                <div className="word font48">{monWord}</div>
+                <div className="word font48">{question}</div>
+                <br />
+                <div className="radio-group">
+                    <input type="radio" id="answer0" name="answer" value="0" checked={answer === "0"} onChange={(e) => handleAnswer(e.target.value)} />
+                    <label htmlFor="answer0" className='full-width'>{answer0}</label>
+                    <br />
+                    <input type="radio" id="answer1" name="answer" value="1" checked={answer === "1"} onChange={(e) => handleAnswer(e.target.value)} />
+                    <label htmlFor="answer1" className='full-width'>{answer1}</label>
+                    <br />
+                    <input type="radio" id="answer2" name="answer" value="2" checked={answer === "2"} onChange={(e) => handleAnswer(e.target.value)} />
+                    <label htmlFor="answer2" className='full-width'>{answer2}</label>
+                    <br />
+                    <input type="radio" id="answer3" name="answer" value="3" checked={answer === "3"} onChange={(e) => handleAnswer(e.target.value)} />
+                    <label htmlFor="answer3" className='full-width'>{answer3}</label>
+                </div>
                 <div className="word font24">{regDate}</div>
                 <div className="word font24">{count}</div>
             </div>

@@ -43,17 +43,14 @@ export default function Footer() {
             case "home" :
                 navigate("/", { replace: true });
                 break;
-            case "test" :
-                navigate("/check", { replace: true });
+            case "test1" :
+                navigate("/test1", { replace: true });
                 break;
-            case "add" :
+            case "test2" :
+                navigate("/test2", { replace: true });
+                break;
+            case "manage" :
                 navigate("/manage", { replace: true });
-                break;
-            case "settings" :
-                navigate("/settings", { replace: true });
-                break;
-            case "user" :
-                navigate("/user", { replace: true });
                 break;
             default :
                 navigate("/", { replace: true });
@@ -94,9 +91,9 @@ export default function Footer() {
                         }}
                     >
                         <MenuItem icon={<HomeIcon />} label={t.home} onClick={() => handleClick("home")} />
-                        <MenuItem icon={<MenuBookIcon />} label={t.study} onClick={() => handleClick("test")} />
-                        <MenuItem icon={<PostAddIcon />} label={t.word} onClick={() => handleClick("add")} />
-                        <MenuItem icon={<SettingsIcon />} label={t.settings} onClick={() => handleClick("settings")} />
+                        <MenuItem icon={<MenuBookIcon />} label={t.test1} onClick={() => handleClick("test1")} />                        
+                        <MenuItem icon={<MenuBookIcon />} label={t.test2} onClick={() => handleClick("test2")} />
+                        <MenuItem icon={<PostAddIcon />} label={t.newWord} onClick={() => handleClick("manage")} />
                     </Box>
                 </Toolbar>
             </AppBar>

@@ -2,7 +2,7 @@ import React from 'react';
 import ApiService from "../services/ApiService";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 
-export default function Quick() {
+export default function Test3() {
 
     const originDataRef = React.useRef([]);
     const shuffledDataRef = React.useRef([]);
@@ -15,6 +15,7 @@ export default function Quick() {
 
     const [question, setQuestion] = React.useState("");
     const [answer, setAnswer] = React.useState(null);
+    const [result, setResult] = React.useState("");
     
     const [answer0, setAnswer0] = React.useState("answer1");
     const [answer1, setAnswer1] = React.useState("answer2");
@@ -60,17 +61,28 @@ export default function Quick() {
 
     const handleAnswer = (value) => {
 
+        setAnswer(value);
+
         const answer = shuffledDataRef.current[shuffledIdxRef.current - 1].answer[parseInt(value, 10)];
         
         if(answer.dic_id == shuffledDataRef.current[shuffledIdxRef.current - 1].dic_id) {
+            setResult("correct");
             if(!finishedDataRef.current[shuffledIdxRef.current - 1].result) {
                 finishedDataRef.current[shuffledIdxRef.current - 1].result = "correct";					
             }
         } else {
+            setResult("wrong");
             if(!finishedDataRef.current[shuffledIdxRef.current - 1].result) {
                 finishedDataRef.current[shuffledIdxRef.current - 1].result = "wrong";
             }
         }
+    }
+
+    const handleNext = (e) => {
+
+        setAnswer(null);
+
+        setResult("");
 
         myNext();
     }
@@ -107,7 +119,7 @@ export default function Quick() {
     }
 
     const getData = () => {
-        ApiService.request("/api/check/select", {
+        ApiService.request("/api/test/select", {
             method: "GET",
         })
             .then((response) => response.json())
@@ -243,8 +255,14 @@ export default function Quick() {
                     <input type="radio" id="answer3" name="answer" value="3" checked={answer === "3"} onChange={(e) => handleAnswer(e.target.value)} />
                     <label htmlFor="answer3" className='full-width'>{answer3}</label>
                 </div>
+                <br />
+                <div className="btn-wrapper">
+                    <button onClick={(e) => handleNext(e)}>Next</button>
+                </div>
+
                 <div className="word font24">{regDate}</div>
                 <div className="word font24">{count}</div>
+                <div className="word font24">{result}</div>
             </div>
 
             <div className={`table-wrapper ${action === "start" ? "hide" : ""}`}>

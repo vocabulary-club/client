@@ -2,9 +2,9 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/0_Login";
 import Home from "./pages/1_Home";
-import Check from "./pages/2_1_Check";
-import Quick from "./pages/2_2_Quick";
-import Test from "./pages/2_3_Test";
+import Test1 from "./pages/2_Test1";
+import Test2 from "./pages/2_Test2";
+import Test3 from "./pages/2_Test3";
 import Manage from "./pages/3_Manage";
 import Settings from "./pages/7_Settings";
 import User from "./pages/8_User";
@@ -22,26 +22,26 @@ function App() {
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route
-                        path="/check"
+                        path="/test1"
                         element={
                             <ProtectedRoute>
-                                <Check />
+                                <Test1 />
                             </ProtectedRoute>
                         }
                     />
                     <Route
-                        path="/quick"
+                        path="/test2"
                         element={
                             <ProtectedRoute>
-                                <Quick />
+                                <Test2 />
                             </ProtectedRoute>
                         }
                     />
                     <Route
-                        path="/test"
+                        path="/test3"
                         element={
                             <ProtectedRoute>
-                                <Test />
+                                <Test3 />
                             </ProtectedRoute>
                         }
                     />
