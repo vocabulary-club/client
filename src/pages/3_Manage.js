@@ -3,9 +3,11 @@ import ApiService from "../services/ApiService";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 
 import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { Modal, Box, Typography, TextField, Button, Stack } from "@mui/material";
+import { Modal, Box, Typography, TextField, Button, Stack, Paper, IconButton, } from "@mui/material";
 
 export default function Manage() {
 
@@ -17,6 +19,8 @@ export default function Manage() {
 
     const [firstWord, setFirstWord] = React.useState("");
     const [secondWord, setSecondWord] = React.useState("");
+
+    const [search, setSearch] = React.useState("");
 
     const updateRef = React.useRef(0);
 
@@ -43,6 +47,19 @@ export default function Manage() {
         updateRef.current = 0;
     }
     
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        const value = e.target.value.toLowerCase();
+        setSearch(value);
+        tabulatorRef.current.setFilter(function (data) {
+            return (
+                data.eng_word?.toLowerCase().includes(value) ||
+                data.mon_word?.toLowerCase().includes(value)
+            );
+        });
+    }
+
     const handleUpdate = (e) => {
         e.preventDefault();
 
@@ -62,6 +79,7 @@ export default function Manage() {
         
         tabulatorRef.current.deselectRow();
         tabulatorRef.current.clearFilter();
+        setSearch("");
     }
     
     const handleDelete = (e) => {
@@ -164,27 +182,50 @@ export default function Manage() {
     return (
         <div className="content-layout">
 
-            <div className="toolbar">
+            {/* Toolbar */}
+            <Paper sx={{ p: 1, mb: 1 }}>
 
-                <input type="text" id="inSearch" placeholder="Search input"/>
-                
-                <button onClick={(e) => handleCreate(e) }>Create</button>
-                <button onClick={(e) => handleUpdate(e) }>Update</button>
-                <button onClick={(e) => handleCancel(e) }>Cancel</button>
-                <button onClick={(e) => handleDelete(e) }>Delete</button>
+                <Stack direction="row" spacing={1}>
+                    <TextField size="small" label="Search" value={search} onChange={(e) => handleSearch(e)} />
 
-                <DeleteIcon
-                    onClick={(e) => handleDelete(e)}
-                    color="error"
-                    sx={{
-                        fontSize: 32,
-                        cursor: "pointer",
-                        "&:hover": { transform: "scale(1.1)" },
-                        "&:active": { transform: "scale(0.9)" },
-                    }}
-                />
+                    <Box
+                        onClick={(e) => handleCreate(e)}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            height: "100%",
+                        }}
+                    >
+                        <IconButton color="primary" size="small">
+                            <AddIcon />
+                        </IconButton>
+                        <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+                            {"New Word"}
+                        </Typography>
+                    </Box>
 
-            </div>
+                    <IconButton color="primary" onClick={handleCreate} aria-label="create">
+                        <AddIcon />
+                    </IconButton>
+
+                    <IconButton color="info" onClick={handleUpdate} aria-label="update">
+                        <EditIcon />
+                    </IconButton>
+
+                    <IconButton color="warning" onClick={handleCancel} aria-label="cancel">
+                        <ClearIcon />
+                    </IconButton>
+
+                    <IconButton color="error" onClick={handleDelete} aria-label="delete">
+                        <DeleteIcon />
+                    </IconButton>
+
+                </Stack>
+
+            </Paper>
 
             <div className="table-wrapper">
                 <div ref={tableRef} />
