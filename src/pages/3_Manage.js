@@ -185,61 +185,85 @@ export default function Manage() {
             {/* Toolbar */}
             <Paper sx={{ p: 1, mb: 1 }}>
 
-                <Stack direction="row" spacing={1}>
-                    <TextField size="small" label="Search" value={search} onChange={(e) => handleSearch(e)} />
-
-                    <Box
-                        onClick={(e) => handleCreate(e)}
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            cursor: "pointer",
-                            height: "100%",
-                        }}
+                <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={1}
+                    alignItems={{ xs: "stretch", sm: "center" }}
                     >
-                        <IconButton color="primary" size="small">
-                            <AddIcon />
-                        </IconButton>
-                        <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
-                            {"New Word"}
-                        </Typography>
-                    </Box>
 
-                    <IconButton color="primary" onClick={handleCreate} aria-label="create">
-                        <AddIcon />
-                    </IconButton>
+                    <TextField
+                        sx={{ width: { xs: "100%", sm: 256 } }}
+                        size="small" label="Search"
+                        value={search} onChange={handleSearch}                        
+                    />
 
-                    <IconButton color="info" onClick={handleUpdate} aria-label="update">
-                        <EditIcon />
-                    </IconButton>
+                    <Stack direction="row" spacing={1} flexWrap="wrap">
+                        
+                        <Box
+                            onClick={(e) => handleCreate(e)}
+                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
+                                justifyContent: "center", cursor: "pointer", height: "100%", }}
+                        >
+                            <IconButton color="primary" size="small">
+                                <AddIcon />
+                            </IconButton>
+                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+                                {"New Word"}
+                            </Typography>
+                        </Box>
 
-                    <IconButton color="warning" onClick={handleCancel} aria-label="cancel">
-                        <ClearIcon />
-                    </IconButton>
+                        <Box
+                            onClick={(e) => handleUpdate(e)}
+                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
+                                justifyContent: "center", cursor: "pointer", height: "100%", }}
+                        >
+                            <IconButton color="info" size="small">
+                                <EditIcon />
+                            </IconButton>
+                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+                                {"Fix Word"}
+                            </Typography>
+                        </Box>
 
-                    <IconButton color="error" onClick={handleDelete} aria-label="delete">
-                        <DeleteIcon />
-                    </IconButton>
+                        <Box
+                            onClick={(e) => handleCancel(e)}
+                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
+                                justifyContent: "center", cursor: "pointer", height: "100%", }}
+                        >
+                            <IconButton color="warning" size="small">
+                                <ClearIcon />
+                            </IconButton>
+                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+                                {"Cancel"}
+                            </Typography>
+                        </Box>
+
+                        <Box
+                            onClick={(e) => handleDelete(e)}
+                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
+                                justifyContent: "center", cursor: "pointer", height: "100%", }}
+                        >
+                            <IconButton color="error" size="small">
+                                <DeleteIcon />
+                            </IconButton>
+                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+                                {"Delete"}
+                            </Typography>
+                        </Box>
+
+                    </Stack>
 
                 </Stack>
 
             </Paper>
 
-            <div className="table-wrapper">
-                <div ref={tableRef} />
-            </div>
+            <Box sx={{ flex: 1, minHeight: 0, height: "100%", }} ref={tableRef}></Box>
 
             <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <Box
                     sx={{
-                        width: 256,
-                        bgcolor: "background.paper",
-                        p: 3,
-                        borderRadius: 2,
-                        m: "auto",
-                        mt: "20%",
+                        width: 256, bgcolor: "background.paper", p: 3,
+                        borderRadius: 2, m: "auto", mt: "20%",
                     }}
                 >
                 {/* Title */}
