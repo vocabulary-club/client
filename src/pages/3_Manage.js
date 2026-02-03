@@ -7,8 +7,35 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid } from "@mui/x-data-grid";
 import { Modal, Box, Typography, TextField, Button, Stack, Paper, IconButton, } from "@mui/material";
+import { useTheme, useMediaQuery } from "@mui/material";
+
+const MenuItem = ({ icon, label, onClick, color }) => {
+    return (
+        <Box
+            onClick={onClick}
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                height: "100%",
+            }}
+        >
+            <IconButton sx={{ p: 0.5 }} size="small" color={color} >
+                {icon || null}
+            </IconButton>
+            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+                {label}
+            </Typography>
+        </Box>
+    );
+};
 
 export default function Manage() {
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const [searchText, setSearchText] = React.useState("");
     const [dataList, setDataList] = React.useState([]);
@@ -198,58 +225,22 @@ export default function Manage() {
                     />
 
                     <Stack direction="row" spacing={1} flexWrap="wrap">
-                        
-                        <Box
-                            onClick={(e) => handleCreate(e)}
-                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
-                                justifyContent: "center", cursor: "pointer", height: "100%", }}
-                        >
-                            <IconButton color="primary" size="small">
-                                <AddIcon />
-                            </IconButton>
-                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
-                                {"New Word"}
-                            </Typography>
-                        </Box>
 
-                        <Box
-                            onClick={(e) => handleUpdate(e)}
-                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
-                                justifyContent: "center", cursor: "pointer", height: "100%", }}
-                        >
-                            <IconButton color="info" size="small">
-                                <EditIcon />
-                            </IconButton>
-                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
-                                {"Fix Word"}
-                            </Typography>
-                        </Box>
-
-                        <Box
-                            onClick={(e) => handleCancel(e)}
-                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
-                                justifyContent: "center", cursor: "pointer", height: "100%", }}
-                        >
-                            <IconButton color="warning" size="small">
-                                <ClearIcon />
-                            </IconButton>
-                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
-                                {"Cancel"}
-                            </Typography>
-                        </Box>
-
-                        <Box
-                            onClick={(e) => handleDelete(e)}
-                            sx={{ display: "flex", flexDirection: "column", alignItems: "center", 
-                                justifyContent: "center", cursor: "pointer", height: "100%", }}
-                        >
-                            <IconButton color="error" size="small">
-                                <DeleteIcon />
-                            </IconButton>
-                            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
-                                {"Delete"}
-                            </Typography>
-                        </Box>
+                        {isMobile ? (
+                            <Stack direction="row" spacing={1}>
+                                <MenuItem icon={<AddIcon />} label={"New Word"} onClick={(e) => handleCreate(e)} color="primary"/>
+                                <MenuItem icon={<EditIcon />} label={"Fix Word"} onClick={(e) => handleUpdate(e)} color="info"/>
+                                <MenuItem icon={<ClearIcon />} label={"Cancel"} onClick={(e) => handleCancel(e)} color="warning"/>
+                                <MenuItem icon={<DeleteIcon />} label={"Delete"} onClick={(e) => handleDelete(e)} color="error"/>
+                            </Stack>
+                            ) : (
+                            <Stack direction="row" spacing={1}>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCreate} >New Word</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleUpdate} >Fix Word</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCancel} >Cancel</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleDelete} >Delete</Button>
+                            </Stack>                            
+                        )}
 
                     </Stack>
 
