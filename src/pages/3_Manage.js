@@ -1,18 +1,19 @@
 import React from 'react';
 import ApiService from "../services/ApiService";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
 
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { DataGrid } from "@mui/x-data-grid";
 import { Modal, Box, Typography, TextField, Button, Stack, Paper, IconButton, } from "@mui/material";
 
 export default function Manage() {
 
-    const tableRef = React.useRef(null);
-    const tabulatorRef = React.useRef(null);
+    const [searchText, setSearchText] = React.useState("");
+    const [dataList, setDataList] = React.useState([]);
+    
+    const [selectionModel, setSelectionModel] = React.useState({ type: 'include', ids: new Set(), });
 
     const [modalOpen, setModalOpen] = React.useState(false);
     const [modalTitle, setModalTitle] = React.useState("Add new word?");
@@ -20,24 +21,18 @@ export default function Manage() {
     const [firstWord, setFirstWord] = React.useState("");
     const [secondWord, setSecondWord] = React.useState("");
 
-    const [search, setSearch] = React.useState("");
-
     const updateRef = React.useRef(0);
 
     React.useEffect(() => {
-        initTable();
 
-        return () => {
-            tabulatorRef.current?.destroy();
-            tabulatorRef.current = null;
-        };
+        getData();
+
+        return () => { };
     }, []);
     
     const handleCreate = (e) => {
-        e.preventDefault();
 
-        tabulatorRef.current.deselectRow();
-        tabulatorRef.current.clearFilter();
+        setSelectionModel({ type: 'include', ids: new Set(), });
 
         setFirstWord("");
         setSecondWord("");
@@ -48,63 +43,64 @@ export default function Manage() {
     }
     
     const handleSearch = (e) => {
-        e.preventDefault();
 
         const value = e.target.value.toLowerCase();
-        setSearch(value);
-        tabulatorRef.current.setFilter(function (data) {
-            return (
-                data.eng_word?.toLowerCase().includes(value) ||
-                data.mon_word?.toLowerCase().includes(value)
-            );
-        });
+        setSearchText(value);
     }
 
     const handleUpdate = (e) => {
-        e.preventDefault();
 
-        const selected = tabulatorRef.current.getSelectedData();
-        if(selected.length) {
-            setFirstWord(selected[0].eng_word);
-            setSecondWord(selected[0].mon_word);
-            setModalTitle("Update old word?");
-            setModalOpen(true);
-
-            updateRef.current = 1;
+        const selectedId = [...selectionModel.ids][0];
+        if (!selectedId) {
+            alert("Please select a row first!");
+            return;
         }
+
+        const selectedRow = getSelectedRow();        
+        if (!selectedRow) return;
+
+        setFirstWord(selectedRow.eng_word);
+        setSecondWord(selectedRow.mon_word);
+        setModalTitle("Update old word?");
+        setModalOpen(true);
+
+        updateRef.current = 1;
     }
     
     const handleCancel = (e) => {
-        e.preventDefault(); 
         
-        tabulatorRef.current.deselectRow();
-        tabulatorRef.current.clearFilter();
-        setSearch("");
+        setSelectionModel({ type: 'include', ids: new Set(), });
+        setSearchText("");
     }
     
     const handleDelete = (e) => {
-        e.preventDefault(); 
-        const selected = tabulatorRef.current.getSelectedData();
-        if(selected.length) {
-            if(window.confirm("Are you sure to delete?")) {
-                const data = {
-                    dic_id : selected[0].dic_id,
-                    eng_id : selected[0].eng_id,
-                    mon_id : selected[0].mon_id,
-                };
-                ApiService.request("/api/manage/delete", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                })
-                .then((response) => response.json())
-                .then((data) => { getData(); })
-                .catch((error) => { alert("Failed to delete."); });
-            }
+
+        const selectedId = [...selectionModel.ids][0];
+        if (!selectedId) {
+            alert("Please select a row first!");
+            return;
+        }
+
+        const selectedRow = getSelectedRow();        
+        if (!selectedRow) return;
+ 
+        if(window.confirm("Are you sure to delete?")) {
+            const data = {
+                dic_id : selectedRow.dic_id,
+                eng_id : selectedRow.eng_id,
+                mon_id : selectedRow.mon_id,
+            };
+            ApiService.request("/api/manage/delete", {
+                method: "POST",
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => { getData(); })
+            .catch((error) => { alert("Failed to delete."); });
         }
     }
 
     const handleModalSave = (e) => {
-        e.preventDefault(); 
 
         if(!firstWord || !secondWord) {
             alert("Enter your words!");
@@ -119,9 +115,10 @@ export default function Manage() {
         let url = "/create";
         if(updateRef.current == 1) { 
             url = "/update"; 
-            const selected = tabulatorRef.current.getSelectedData();
-            data.eng_id = selected[0].eng_id;
-            data.mon_id = selected[0].mon_id;
+            
+            const selectedRow = getSelectedRow();
+            data.eng_id = selectedRow.eng_id;
+            data.mon_id = selectedRow.mon_id;
         }
 
         ApiService.request("/api/manage" + url, {
@@ -141,43 +138,46 @@ export default function Manage() {
         })
             .then((response) => response.json())
             .then((data) => {
-                tabulatorRef.current?.setData(data);
+                setDataList(data);
             })
             .catch((error) => {
                 console.error("Request failed:", error.message);
             });
     };
 
-    const initTable = () => {
-        if (!tableRef.current) return;
-
-        tabulatorRef.current = new Tabulator(tableRef.current, {
-            selectableRows: 1,
-            layout: "fitColumns",
-            history: true,
-            pagination: true,
-            paginationSize: 32,
-            columnDefaults: {
-                tooltip: true,
-            },
-            columns: [
-                {
-                    formatter: "rowSelection",
-                    hozAlign: "center",
-                    headerSort: false,
-                    frozen: true,
-                    headerHozAlign: "center",
-                    width: 32,
-                },
-                { title: "English", field: "eng_word" },
-                { title: "Mongolian", field: "mon_word" },
-            ],
-        });
-
-        tabulatorRef.current.on("tableBuilt", () => {  
-            getData();
-        });
+    const getSelectedRow = () => {
+        const id = [...selectionModel.ids][0];
+        if (!id) return null;
+        return dataList.find(r => r.dic_id === id);
     };
+
+    const columns = [
+        { field: "eng_word", headerName: "English", flex: 1 },
+        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+    ];
+
+    const filteredList = React.useMemo(() => {
+        return dataList.filter((item) => {
+            if (!searchText) return true;
+            return (
+                item.eng_word.toLowerCase().includes(searchText) ||
+                item.mon_word.toLowerCase().includes(searchText)
+            );
+        });
+    }, [searchText, dataList]);
+
+    const handleCheckBoxClick = React.useCallback((newModel) => {
+        const idsArray = [...newModel.ids];
+
+        if (idsArray.length > 1) {
+            const last = idsArray[idsArray.length - 1];
+            setSelectionModel({ type: 'include', ids: new Set([last]), });
+        } else if (idsArray.length === 1) {
+            setSelectionModel(newModel);
+        } else {
+            setSelectionModel({ type: 'include', ids: new Set(), });
+        }
+    }, []);
 
     return (
         <div className="content-layout">
@@ -194,7 +194,7 @@ export default function Manage() {
                     <TextField
                         sx={{ width: { xs: "100%", sm: 256 } }}
                         size="small" label="Search"
-                        value={search} onChange={handleSearch}                        
+                        value={searchText} onChange={handleSearch}                        
                     />
 
                     <Stack direction="row" spacing={1} flexWrap="wrap">
@@ -257,7 +257,17 @@ export default function Manage() {
 
             </Paper>
 
-            <Box sx={{ flex: 1, minHeight: 0, height: "100%", }} ref={tableRef}></Box>
+            <Box sx={{ flex: 1, minHeight: 0, height: "100%", }}>
+                <DataGrid
+                    getRowId={(row) => row.dic_id || null}
+                    rows={filteredList}
+                    columns={columns}
+                    disableColumnMenu
+                    checkboxSelection={true}
+                    rowSelectionModel={selectionModel}
+                    onRowSelectionModelChange={handleCheckBoxClick}
+                />
+            </Box>
 
             <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
                 <Box
