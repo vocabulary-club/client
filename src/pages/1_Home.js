@@ -82,12 +82,6 @@ export default function Home() {
                     columns={columns}
                     disableColumnMenu
                     checkboxSelection={false}
-                    sx={{
-                        "& .MuiDataGrid-columnHeaders": {
-                            fontSize: "18px",
-                            borderBottom: "2px solid #ccc",
-                        }
-                    }}
                 />
             </Box>
 
