@@ -25,7 +25,7 @@ const MenuItem = ({ icon, label, onClick, color }) => {
             <IconButton sx={{ p: 0.5 }} size="small" color={color} >
                 {icon || null}
             </IconButton>
-            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+            <Typography variant="caption" sx={{ fontSize: 12, lineHeight: 1, }}>
                 {label}
             </Typography>
         </Box>
@@ -228,10 +228,14 @@ export default function Manage() {
 
                         {isMobile ? (
                             <Stack direction="row" spacing={1}>
-                                <MenuItem icon={<AddIcon />} label={"New Word"} onClick={(e) => handleCreate(e)} color="primary"/>
+                                {/* <MenuItem icon={<AddIcon />} label={"New Word"} onClick={(e) => handleCreate(e)} color="primary"/>
                                 <MenuItem icon={<EditIcon />} label={"Fix Word"} onClick={(e) => handleUpdate(e)} color="info"/>
                                 <MenuItem icon={<ClearIcon />} label={"Cancel"} onClick={(e) => handleCancel(e)} color="warning"/>
-                                <MenuItem icon={<DeleteIcon />} label={"Delete"} onClick={(e) => handleDelete(e)} color="error"/>
+                                <MenuItem icon={<DeleteIcon />} label={"Delete"} onClick={(e) => handleDelete(e)} color="error"/> */}
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleCreate} >New Word</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleUpdate} >Fix Word</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleCancel} >Cancel</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleDelete} >Delete</Button>
                             </Stack>
                             ) : (
                             <Stack direction="row" spacing={1}>

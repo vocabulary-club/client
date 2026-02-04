@@ -1,23 +1,18 @@
 import React from 'react';
 import ApiService from "../services/ApiService";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
+
+import { DataGrid } from "@mui/x-data-grid";
+import { Box, Paper, Stack, Radio, RadioGroup, FormControlLabel, FormControl, ToggleButton, ToggleButtonGroup, } from "@mui/material";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 export default function Home() {
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
     const [dayVal, setDayVal] = React.useState("last");
 
-    const tableRef = React.useRef(null);
-    const tabulatorRef = React.useRef(null);
-
-    React.useEffect(() => {
-        
-        initTable();
-
-        return () => {
-            tabulatorRef.current?.destroy();
-            tabulatorRef.current = null;
-        };
-    }, []);
+    const [dataList, setDataList] = React.useState([]);
 
     React.useEffect(() => {
         
@@ -35,61 +30,67 @@ export default function Home() {
         })
             .then((response) => response.json())
             .then((data) => {         
-                tabulatorRef.current.setData(data);
+                setDataList(data);
             })
             .catch((error) => {
                 console.error("Request failed:", error.message);
             });
     };
 
-    const initTable = () => {
-        if (!tableRef.current) return;
-
-        tabulatorRef.current = new Tabulator(tableRef.current, {
-            selectableRows:1,
-            layout:"fitColumns",
-            history:true,
-            pagination: false,
-			columnDefaults:{
-                tooltip:true,         //show tool tips on cells
-            },
-            columns:[
-                {
-                    formatter: "rowSelection", 
-                    hozAlign: "center",
-                    headerSort: false,
-                    frozen: true,
-                    headerHozAlign: "center",
-                    width: 32,
-                },
-                {title:"English", field:"eng_word", },
-                {title:"Mongolian", field:"mon_word", },
-            ],
-        });
-
-        tabulatorRef.current.on("tableBuilt", function(){
-            getData();
-        });
-    };
+    const columns = [
+        { field: "eng_word", headerName: "English", flex: 1 },
+        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+    ];
     
     return (
         <div className="content-layout">
-            <div className="toolbar">
-                <div className="radio-group">
-                    <input type="radio" id="last" name="day" value="last" checked={dayVal === "last"} onChange={(e) => setDayVal(e.target.value)} />
-                    <label htmlFor="last">Last Day</label>
 
-                    <input type="radio" id="secondLast" name="day" value="second last" checked={dayVal === "second last"} onChange={(e) => setDayVal(e.target.value)} />
-                    <label htmlFor="secondLast">A Day Before</label>
+            {/* Toolbar */}
+            <Paper sx={{ p: 1, mb: 1 }}>
 
-                    <input type="radio" id="thirdLast" name="day" value="third last" checked={dayVal === "third last"} onChange={(e) => setDayVal(e.target.value)} />
-                    <label htmlFor="thirdLast">2 Days Before</label>
-                </div>
-            </div>
+                {isMobile ? (
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                        <ToggleButtonGroup
+                            exclusive
+                            value={dayVal}
+                            onChange={(e, val) => val && setDayVal(val)}
+                            size="small"                            
+                        >
+                            <ToggleButton value="last" sx={{ fontSize: 12 }} >Last Day</ToggleButton>
+                            <ToggleButton value="second last" sx={{ fontSize: 12 }} >A Day Before</ToggleButton>
+                            <ToggleButton value="third last" sx={{ fontSize: 12 }} >2 Days Before</ToggleButton>
+                        </ToggleButtonGroup>
+                    </Stack>
+                    ) : (
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                        <FormControl>
+                            <RadioGroup row name="day" value={dayVal} onChange={(e) => setDayVal(e.target.value)} >
+                                <FormControlLabel value="last" control={<Radio />} label="Last Day" />
+                                <FormControlLabel value="second last" control={<Radio />} label="A Day Before" />
+                                <FormControlLabel value="third last" control={<Radio />} label="2 Days Before" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Stack>
+                )}
 
-            <div className="table-wrapper">
-                <div ref={tableRef} />
-            </div>
+            </Paper>
+
+            <Box sx={{ flex: 1, minHeight: 0, height: "100%", }}>
+                <DataGrid
+                    getRowId={(row) => row.dic_id || null}
+                    rows={dataList}
+                    columns={columns}
+                    disableColumnMenu
+                    checkboxSelection={false}
+                    sx={{
+                        "& .MuiDataGrid-columnHeaders": {
+                            fontSize: "18px",
+                            borderBottom: "2px solid #ccc",
+                        }
+                    }}
+                />
+            </Box>
+
         </div>
     );
 }
