@@ -1,6 +1,14 @@
 import React from 'react';
 import ApiService from "../services/ApiService";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
+
+import { DataGrid } from "@mui/x-data-grid";
+import { Box, Paper, Stack, Typography,
+    Radio, RadioGroup, 
+    FormControlLabel, FormControl, 
+    ToggleButton, ToggleButtonGroup, Divider, 
+    InputLabel, Select, MenuItem,
+    LinearProgress  } from "@mui/material";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 export default function Test2() {
 
@@ -10,10 +18,11 @@ export default function Test2() {
     const shuffledIdxRef = React.useRef(0);
 
     const [action, setAction] = React.useState("stop");          // start, stop
-    const [limit, setLimit] = React.useState("rand 10");    // last 10, rand 10, last 50, rand 50
+    const [limit, setLimit] = React.useState("r10");    // last 10, rand 10, last 50, rand 50
     const [lang, setLang] = React.useState("eng");          // eng, mon
 
-    const [question, setQuestion] = React.useState("");
+    const [testWord, setTestWord] = React.useState("");
+    const [progress, setProgress] = React.useState(0);
     const [answer, setAnswer] = React.useState(null);
     
     const [answer0, setAnswer0] = React.useState("answer1");
@@ -21,22 +30,12 @@ export default function Test2() {
     const [answer2, setAnswer2] = React.useState("answer3");
     const [answer3, setAnswer3] = React.useState("answer4");
 
-    const [regDate, setRegDate] = React.useState("");
-    const [count, setCount] = React.useState("");
-
-    const tableRef = React.useRef(null);
-    const tabulatorRef = React.useRef(null);
-
-    const [tableReady, setTableReady] = React.useState(false);
+    const [dataList, setDataList] = React.useState([]);
 
     React.useEffect(() => {
+        
         getData();
-        initTable();
-
-        return () => {
-            tabulatorRef.current?.destroy();
-            tabulatorRef.current = null;
-        };
+        
     }, []);
 
     React.useEffect(() => {
@@ -46,19 +45,20 @@ export default function Test2() {
 
             finishedDataRef.current = [];
             shuffledIdxRef.current = 0;
+            setProgress(0);
 
             myNext();       
 
         } else {
-
-            if(tableReady) { tabulatorRef.current.setData(finishedDataRef.current); }
-
+            setDataList(finishedDataRef.current);
         }
 
         return () => { }
     }, [action]);
 
     const handleAnswer = (value) => {
+
+        setAnswer(null);
 
         const answer = shuffledDataRef.current[shuffledIdxRef.current - 1].answer[parseInt(value, 10)];
         
@@ -86,24 +86,24 @@ export default function Test2() {
         const currData = shuffledDataRef.current[currIndex];
 
         if (lang === "eng") {
-            setQuestion(currData?.eng_word || "");
+            setTestWord(currData?.eng_word || "");
             setAnswer0(currData?.answer[0]?.mon_word || "");
             setAnswer1(currData?.answer[1]?.mon_word || "");
             setAnswer2(currData?.answer[2]?.mon_word || "");
             setAnswer3(currData?.answer[3]?.mon_word || "");            
         } else {
-            setQuestion(currData?.mon_word || "");
+            setTestWord(currData?.mon_word || "");
             setAnswer0(currData?.answer[0]?.eng_word || "");
             setAnswer1(currData?.answer[1]?.eng_word || "");
             setAnswer2(currData?.answer[2]?.eng_word || "");
             setAnswer3(currData?.answer[3]?.eng_word || "");
         }
 
-        setRegDate(currData?.reg_date || "");
-        setCount(`${currIndex + 1} / ${shuffledDataRef.current.length}`);
         finishedDataRef.current = [...finishedDataRef.current, currData];
         shuffledIdxRef.current = currIndex + 1;
 
+        const percent = ((currIndex + 1) / shuffledDataRef.current.length) * 100;
+        setProgress(percent);
     }
 
     const getData = () => {
@@ -120,13 +120,13 @@ export default function Test2() {
     };
 
     const reShuffle = () => {
-        if (limit.includes("last 10")) {
+        if (limit.includes("l10")) {
             shuffledDataRef.current = shuffle(originDataRef.current.slice(0, 10));
-        } else if(limit.includes("last 50")) {
+        } else if(limit.includes("l50")) {
             shuffledDataRef.current = shuffle(originDataRef.current.slice(0, 50));
-        } else if(limit.includes("rand 10")) {
+        } else if(limit.includes("r10")) {
             shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 10);
-        } else if(limit.includes("rand 50")) {
+        } else if(limit.includes("r50")) {
             shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 50);
         }
 
@@ -153,103 +153,169 @@ export default function Test2() {
         return copy;
     };
 
-    const initTable = () => {
-        if (!tableRef.current) return;
-
-        tabulatorRef.current = new Tabulator(tableRef.current, {
-            selectableRows: 1,
-            layout: "fitColumns",
-            history: true,
-            pagination: false,
-            columnDefaults: {
-                tooltip: true,
-            },
-            rowFormatter: function (row) {
-				const data = row.getData();
-				if (data.result === "correct") {
-					row.getElement().style.backgroundColor = "#4f44"; // green
-				} else if (data.result === "wrong") {
-					row.getElement().style.backgroundColor = "#f444"; // red
-				}
-			},
-            columns: [
-                {
-                    formatter: "rowSelection",
-                    hozAlign: "center",
-                    headerSort: false,
-                    frozen: true,
-                    headerHozAlign: "center",
-                    width: 32,
-                },
-                { title: "English", field: "eng_word" },
-                { title: "Mongolian", field: "mon_word" },
-            ],
-        });
-
-        tabulatorRef.current.on("tableBuilt", () => {  
-            setTableReady(true);
-        });
-    };
+    const columns = [
+        { field: "eng_word", headerName: "English", flex: 1 },
+        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+    ];
 
     return (
         <div className="content-layout">
-            <div className="toolbar">
             
-                <div className="radio-group">
-                    <input type="radio" id="start" name="action" value="start" checked={action === "start"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady} />
-                    <label htmlFor="start">Start</label>
+            {/* Toolbar */}
+            <Paper sx={{ p: 1, mb: 1 }}>
 
-                    <input type="radio" id="stop" name="action" value="stop" checked={action === "stop"} onChange={(e)=> setAction(e.target.value)} disabled={!tableReady} />
-                    <label htmlFor="stop">Stop</label>
-                </div>
+                <Stack direction={{ xs: "column", sm: "row" }}                    
+                    alignItems={{ xs: "stretch", sm: "center" }}
+                    spacing={{ xs: 2, sm: 1 }} >
 
-                <div className="radio-group">
-                    <input type="radio" id="lastTen" name="limit" value="last 10" checked={limit === "last 10"} onChange={(e) => setLimit(e.target.value)} />
-                    <label htmlFor="lastTen">Last 10</label>
+                    <Stack direction="row" alignItems="center" spacing={1}>
 
-                    <input type="radio" id="randTen" name="limit" value="rand 10" checked={limit === "rand 10"} onChange={(e)=> setLimit(e.target.value)} />
-                    <label htmlFor="randTen">Rand 10</label>
+                        {/* ACTION */}
+                        <ToggleButtonGroup
+                            exclusive
+                            value={action}
+                            onChange={(e, val) => val && setAction(val)}
+                            size="small"
+                        >
+                            <ToggleButton value="start">
+                                Start
+                            </ToggleButton>
 
-                    <input type="radio" id="lastFifty" name="limit" value="last 50" checked={limit === "last 50"} onChange={(e)=> setLimit(e.target.value)} />
-                    <label htmlFor="lastFifty">Last 50</label>
+                            <ToggleButton value="stop">
+                                Stop
+                            </ToggleButton>
+                        </ToggleButtonGroup>
 
-                    <input type="radio" id="randFifty" name="limit" value="rand 50" checked={limit === "rand 50"} onChange={(e)=> setLimit(e.target.value)} />
-                    <label htmlFor="randFifty">Rand 50</label>
-                </div>
+                        {/* LANGUAGE */}
+                        <ToggleButtonGroup
+                            exclusive
+                            value={lang}
+                            onChange={(e, val) => val && setLang(val)}
+                            size="small"
+                            >
+                            <ToggleButton value="eng">
+                                English
+                            </ToggleButton>
 
-                <div className="radio-group">
-                    <input type="radio" id="eng" name="lang" value="eng" checked={lang === "eng"} onChange={(e) => setLang(e.target.value)} />
-                    <label htmlFor="eng">Eng</label>
+                            <ToggleButton value="mon">
+                                Mongolian
+                            </ToggleButton>
+                        </ToggleButtonGroup>
 
-                    <input type="radio" id="mon" name="lang" value="mon" checked={lang === "mon"} onChange={(e)=> setLang(e.target.value)} />
-                    <label htmlFor="mon">Mon</label>
-                </div>
+                    </Stack>
 
-            </div>
+                    {/* LIMIT */}
+                    <FormControl size="small" sx={{ minWidth: 200 }}>
+                    <InputLabel>Choose words</InputLabel>
+                    <Select
+                        label="Choose words"
+                        value={limit}
+                        onChange={(e) => setLimit(e.target.value)}
+                    >
+                        <MenuItem value="l10">Latest 10 words</MenuItem>
+                        <MenuItem value="r10">Random 10 words</MenuItem>
+                        <MenuItem value="l50">Latest 50 words</MenuItem>
+                        <MenuItem value="r50">Random 50 words</MenuItem>
+                    </Select>
+                    </FormControl>
 
-            <div className={`word-wrapper ${action === "stop" ? "hide" : ""}`}>
-                <div className="word font48">{question}</div>
-                <br />
-                <div className="radio-group">
-                    <input type="radio" id="answer0" name="answer" value="0" checked={answer === "0"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer0" className='full-width'>{answer0}</label>
-                    <br />
-                    <input type="radio" id="answer1" name="answer" value="1" checked={answer === "1"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer1" className='full-width'>{answer1}</label>
-                    <br />
-                    <input type="radio" id="answer2" name="answer" value="2" checked={answer === "2"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer2" className='full-width'>{answer2}</label>
-                    <br />
-                    <input type="radio" id="answer3" name="answer" value="3" checked={answer === "3"} onChange={(e) => handleAnswer(e.target.value)} />
-                    <label htmlFor="answer3" className='full-width'>{answer3}</label>
-                </div>
-                <div className="word font24">{regDate}</div>
-                <div className="word font24">{count}</div>
-            </div>
+                </Stack>
+            </Paper>
 
-            <div className={`table-wrapper ${action === "start" ? "hide" : ""}`}>
-                <div ref={tableRef} />
-            </div>
+            {action === "start" ? (
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 1,
+                        py: 2
+                    }}
+                    >
+                    <Typography fontSize={48}>{testWord}</Typography>
+
+                    <Box sx={{ width: "100%" }}>
+                        <RadioGroup
+                            name="answer"
+                            onChange={(e) => handleAnswer(e.target.value)}
+                        >
+                            <FormControlLabel
+                                value="0"
+                                checked={answer === "0"}
+                                control={<Radio />}
+                                label={answer0}
+                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
+                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
+                            />
+
+                            <FormControlLabel
+                                value="1"
+                                checked={answer === "1"}
+                                control={<Radio />}
+                                label={answer1}
+                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
+                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
+                            />
+
+                            <FormControlLabel
+                                value="2"
+                                checked={answer === "2"}
+                                control={<Radio />}
+                                label={answer2}
+                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
+                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
+                            />
+
+                            <FormControlLabel
+                                value="3"
+                                checked={answer === "3"}
+                                control={<Radio />}
+                                label={answer3}
+                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
+                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
+                            />
+                        </RadioGroup>
+                    </Box>
+
+                    <Box sx={{ width: "100%", mt: 2 }}>
+                        <LinearProgress
+                            variant="determinate"
+                            value={progress}
+                            sx={{ height: 10, borderRadius: 5 }}
+                        />
+                    </Box>
+
+                </Box>
+            ) : (
+                <Box 
+                    sx={{ 
+                        flex: 1, minHeight: 0, height: "100%", 
+                        display: "flex",
+                    }}>
+                    <DataGrid
+                        getRowId={(row) => row.dic_id || null}
+                        rows={dataList}
+                        columns={columns}
+                        disableColumnMenu
+                        checkboxSelection={false}
+                        getRowClassName={(params) => {
+                            if (params.row.result === "correct") return "row-correct";
+                            if (params.row.result === "wrong") return "row-wrong";
+                            return "";
+                        }}
+                        sx={{
+                            "& .row-correct": {
+                                bgcolor: "success.light",
+                                "&:hover": { bgcolor: "success.main" },
+                            },
+                            "& .row-wrong": {
+                                bgcolor: "error.light",
+                                "&:hover": { bgcolor: "error.main" },
+                            },
+                        }}
+                    />
+                </Box>
+            )}
 
         </div>
     );  

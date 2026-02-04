@@ -212,17 +212,13 @@ export default function Manage() {
             {/* Toolbar */}
             <Paper sx={{ p: 1, mb: 1 }}>
 
-                <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    spacing={1}
+                <Stack direction={{ xs: "column", sm: "row" }}                    
                     alignItems={{ xs: "stretch", sm: "center" }}
-                    >
+                    spacing={1} >
 
-                    <TextField
-                        sx={{ width: { xs: "100%", sm: 256 } }}
-                        size="small" label="Search"
-                        value={searchText} onChange={handleSearch}                        
-                    />
+                    <TextField size="small" label="Search"
+                        value={searchText} onChange={handleSearch}
+                        sx={{ width: { xs: "100%", sm: 256 } }} />
 
                     <Stack direction="row" spacing={1} flexWrap="wrap">
 
