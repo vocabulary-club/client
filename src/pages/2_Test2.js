@@ -7,10 +7,15 @@ import { Box, Paper, Stack, Typography,
     FormControlLabel, FormControl, 
     ToggleButton, ToggleButtonGroup, Divider, 
     InputLabel, Select, MenuItem,
-    LinearProgress  } from "@mui/material";
+    LinearProgress,
+    List, ListItemButton, ListItemText  } from "@mui/material";
+
 import { useTheme, useMediaQuery } from "@mui/material";
 
 export default function Test2() {
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const originDataRef = React.useRef([]);
     const shuffledDataRef = React.useRef([]);
@@ -235,46 +240,61 @@ export default function Test2() {
                     <Typography fontSize={48}>{testWord}</Typography>
 
                     <Box sx={{ width: "100%" }}>
-                        <RadioGroup
-                            name="answer"
-                            onChange={(e) => handleAnswer(e.target.value)}
-                        >
-                            <FormControlLabel
-                                value="0"
-                                checked={answer === "0"}
-                                control={<Radio />}
-                                label={answer0}
-                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
-                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
-                            />
+                        <List sx={{ p: 0 }}>
 
-                            <FormControlLabel
-                                value="1"
-                                checked={answer === "1"}
-                                control={<Radio />}
-                                label={answer1}
-                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
-                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
-                            />
+                            <ListItemButton
+                                selected={answer === "0"}
+                                onClick={() => handleAnswer("0")}
+                                sx={{
+                                    mb: 1,
+                                    borderRadius: 2,
+                                    border: "1px solid",
+                                    borderColor: "divider"
+                                }}
+                                >
+                                <ListItemText primary={answer0} />
+                            </ListItemButton>
 
-                            <FormControlLabel
-                                value="2"
-                                checked={answer === "2"}
-                                control={<Radio />}
-                                label={answer2}
-                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
-                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
-                            />
+                            <ListItemButton
+                                selected={answer === "1"}
+                                onClick={() => handleAnswer("1")}
+                                sx={{
+                                    mb: 1,
+                                    borderRadius: 2,
+                                    border: "1px solid",
+                                    borderColor: "divider"
+                                }}
+                                >
+                                <ListItemText primary={answer1} />
+                            </ListItemButton>
 
-                            <FormControlLabel
-                                value="3"
-                                checked={answer === "3"}
-                                control={<Radio />}
-                                label={answer3}
-                                sx={{ width: "100%", m: 0, mb: 1,  p: 1.2, borderRadius: 2, border: "1px solid",
-                                    borderColor: "divider", "&:hover": { bgcolor: "action.hover", }, }}
-                            />
-                        </RadioGroup>
+                            <ListItemButton
+                                selected={answer === "2"}
+                                onClick={() => handleAnswer("2")}
+                                sx={{
+                                    mb: 1,
+                                    borderRadius: 2,
+                                    border: "1px solid",
+                                    borderColor: "divider"
+                                }}
+                                >
+                                <ListItemText primary={answer2} />
+                            </ListItemButton>
+
+                            <ListItemButton
+                                selected={answer === "3"}
+                                onClick={() => handleAnswer("3")}
+                                sx={{
+                                    mb: 1,
+                                    borderRadius: 2,
+                                    border: "1px solid",
+                                    borderColor: "divider"
+                                }}
+                                >
+                                <ListItemText primary={answer3} />
+                            </ListItemButton>
+
+                        </List>
                     </Box>
 
                     <Box sx={{ width: "100%", mt: 2 }}>
