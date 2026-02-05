@@ -108,6 +108,7 @@ export default function Footer() {
                                 >
                                     <MenuItem onClick={() => handleMenuClick("/test1")}>Test 1</MenuItem>
                                     <MenuItem onClick={() => handleMenuClick("/test2")}>Test 2</MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/test3")}>Test 3</MenuItem>
                                 </Menu>
 
                             <MyMenuItem 

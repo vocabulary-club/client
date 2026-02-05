@@ -24,7 +24,7 @@ export default function Home() {
 
         const data = { "day" : dayVal, };
         ApiService.request("/", {
-            auth: false,
+            // auth: false,
             method: "POST",
             body: JSON.stringify(data)
         })
