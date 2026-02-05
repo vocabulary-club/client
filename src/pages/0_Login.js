@@ -18,9 +18,9 @@ export default function Login() {
                 bgcolor: "#f5f5f5",
             }}
             >
-            <Paper sx={{ p: 2, width: 360, height: 120, mt: -16}} elevation={3}>
+            <Paper sx={{ p: 2, width: 360, mt: -16}} elevation={3}>
 
-                <Box mt={3} display="flex" flexDirection="column" gap={1}>
+                <Box display="flex" flexDirection="column" gap={1}>
                     <Button
                         variant="outlined"
                         startIcon={<GoogleIcon />}

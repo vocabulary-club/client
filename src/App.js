@@ -2,10 +2,13 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/0_Login";
 import Home from "./pages/1_Home";
-import Test1 from "./pages/2_Test1";
-import Test2 from "./pages/2_Test2";
-import Test3 from "./pages/2_Test3";
-import Manage from "./pages/3_Manage";
+import Manage from "./pages/2_Manage";
+import Test1 from "./pages/3_Test1";
+import Test2 from "./pages/3_Test2";
+import Test3 from "./pages/3_Test3";
+import About from "./pages/6_About";
+import PrivacyPolicy from "./pages/6_PrivacyPolicy";
+import TermsOfService from "./pages/6_TermsOfService";
 import Settings from "./pages/7_Settings";
 import User from "./pages/8_User";
 import Menu from "./pages/9_Menu";
@@ -27,6 +30,14 @@ function App() {
 
                     <Route element={<MainLayout />}>
                         <Route path="/" element={<Home />} />
+                        <Route
+                            path="/manage"
+                            element={
+                                <ProtectedRoute>
+                                    <Manage />
+                                </ProtectedRoute>
+                            }
+                        />  
                         <Route
                             path="/test1"
                             element={
@@ -50,15 +61,31 @@ function App() {
                                     <Test3 />
                                 </ProtectedRoute>
                             }
-                        />
+                        />                  
                         <Route
-                            path="/manage"
+                            path="/about"
                             element={
                                 <ProtectedRoute>
-                                    <Manage />
+                                    <About />
                                 </ProtectedRoute>
                             }
-                        />                    
+                        />
+                        <Route
+                            path="/privacyPolicy"
+                            element={
+                                <ProtectedRoute>
+                                    <PrivacyPolicy />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/termsOfService"
+                            element={
+                                <ProtectedRoute>
+                                    <TermsOfService />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route
                             path="/settings"
                             element={

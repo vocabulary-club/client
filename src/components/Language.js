@@ -1,16 +1,16 @@
 export const languages = {
     en: {
         home: "Home",
-        test1: "Test 1",
-        test2: "Test 2",
+        test: "Test",
         newWord: "New Word",
+        about: "About",
     },
     mn: {
         home: "Эхлэл",
-        test1: "Test 1",       
-        test2: "Test 2",
+        test: "Тест",
         newWord: "Шинэ Үг",
+        about: "Тухай",
     },
 };
 
-export const currLang = "en";
+export const currLang = "mn";
