@@ -27,15 +27,15 @@ export default function Header() {
                 position="fixed"
                 sx={{
                     top: 0,
-                    height: 48,
+                    height: 52,
                     overflow: "hidden",
                 }}
             >
                 <Toolbar
                     disableGutters
                     sx={{
-                        height: 48,
-                        minHeight: "48px !important",
+                        height: 52,
+                        minHeight: "52px !important",
                         justifyContent: "space-between",
                         alignItems: "center",
                         px: 1,

@@ -6,14 +6,14 @@
 }
 
 header, footer {
-    height: 48px; 
+    height: 52px; 
     width: 100vw;
 }
 
 main { 
     flex: 1; 
     min-height: 0; 
-    padding: 8px; 
+    padding: 0px; 
     background-color: #cccf; 
 }
 
@@ -27,11 +27,11 @@ main .content-layout {
 
 @media (max-width: 768px) {
     
-    header { 
+    /* header { 
         height: 64px; 
     }
 
     footer { 
         height: 64px; 
-    }
+    } */
 }

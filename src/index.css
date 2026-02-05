@@ -11,6 +11,5 @@ html, body {
     font-family: 'OCRA', monospace;  
 }
 
-@import "tabulator-tables/dist/css/tabulator.min.css";
 @import "./styles/Layout.css";
 @import "./styles/Style.css";

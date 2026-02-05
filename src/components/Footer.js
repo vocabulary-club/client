@@ -27,7 +27,7 @@ const MenuItem = ({ icon, label, onClick }) => {
             <IconButton sx={{ color: "white", p: 0.5 }} size="small">
                 {icon || null}
             </IconButton>
-            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 10, lineHeight: 1 }}>
+            <Typography variant="caption" sx={{ mt: -0.5, fontSize: 12, lineHeight: 1 }}>
                 {label}
             </Typography>
         </Box>
@@ -66,15 +66,15 @@ export default function Footer() {
                 sx={{
                     top: "auto",
                     bottom: 0,
-                    height: 48,
+                    height: 52,
                     overflow: "hidden",
                 }}
                 >
                 <Toolbar
                     disableGutters
                     sx={{
-                        height: 48,
-                        minHeight: "48px !important",
+                        height: 52,
+                        minHeight: "52px !important",
                         justifyContent: "center",
                         alignItems: "center",
                         px: 1,
