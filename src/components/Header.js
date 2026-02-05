@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Box, IconButton, Typography, 
-    Button, Menu, MenuItem } from "@mui/material";
+    Button, Menu, MenuItem, Avatar, } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -19,7 +19,6 @@ export default function Header() {
     const navigate = useNavigate();
     const location = useLocation();
     const path = location.pathname;
-    const showAuth = path !== "/" && path !== "/login";
     const { user, logout } = useAuth();
 
     const [testAnchor, setTestAnchor] = React.useState(null);
@@ -68,7 +67,19 @@ export default function Header() {
                                 sx={{ color: "white" }}
                                 onClick={() => handleMenuClick("/user")}
                             >
-                                <AccountCircleIcon />
+                                {user?.pictureUrl ? 
+                                    (
+                                        <Avatar
+                                            src={user.pictureUrl}
+                                            alt="User"
+                                            sx={{ width: 32, height: 32 }}
+                                        />
+                                    ) : 
+                                    (
+                                        <AccountCircleIcon />
+                                    )
+                                }
+                                
                             </IconButton>
                         </Box>
 
@@ -109,8 +120,20 @@ export default function Header() {
                                 sx={{ color: "white" }}
                                 onClick={() => handleMenuClick("/user")}
                             >
-                                <AccountCircleIcon />
-                            </IconButton>                      
+                                {user?.pictureUrl ? 
+                                    (
+                                        <Avatar
+                                            src={user.pictureUrl}
+                                            alt="User"
+                                            sx={{ width: 32, height: 32 }}
+                                        />
+                                    ) : 
+                                    (
+                                        <AccountCircleIcon />
+                                    )
+                                }
+                                
+                            </IconButton>
                         </Box>
 
                         {/* CENTER MENUS */}

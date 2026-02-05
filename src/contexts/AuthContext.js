@@ -9,8 +9,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const login = (userData) => setUser(userData);
-
     const logout = async () => {
         try {
             await fetch(`${ApiService.apiUrl}/logout`, {
@@ -30,8 +28,8 @@ export const AuthProvider = ({ children }) => {
         const loadUser = async () => {
             try {
                 const response = await ApiService.request("/api/user", { method: "GET", });
-                const data = await response.json();       
-                setUser({ name: data.name });
+                const data = await response.json();
+                setUser(data);
             } catch (err) {
                 setUser(null);
             } finally {
@@ -43,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, logout }}>
             {children}
         </AuthContext.Provider>
     );
