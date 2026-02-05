@@ -152,11 +152,11 @@ export default function Header() {
                                 gap: 2
                             }}
                         >
-                            <Button color="inherit" onClick={() => handleMenuClick("/")}>
+                            <Button color="inherit" onClick={() => handleMenuClick("/")} sx={{fontSize: 20, width: 120, }} >
                                 Home
                             </Button>
 
-                            <Button color="inherit" onClick={() => handleMenuClick("/manage")}>
+                            <Button color="inherit" onClick={() => handleMenuClick("/manage")} sx={{fontSize: 20, width: 120, }} >
                                 New Word
                             </Button>
 
@@ -164,6 +164,7 @@ export default function Header() {
                                 color="inherit"
                                 endIcon={<ArrowDropDownIcon />}
                                 onClick={openTestMenu}
+                                sx={{fontSize: 20, width: 120, }}
                             >
                                 Test
                             </Button>
@@ -191,6 +192,7 @@ export default function Header() {
                                 color="inherit"
                                 endIcon={<ArrowDropDownIcon />}
                                 onClick={openAboutMenu}
+                                sx={{fontSize: 20, width: 120, }}
                             >
                                 About
                             </Button>
