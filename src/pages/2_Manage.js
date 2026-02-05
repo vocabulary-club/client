@@ -51,6 +51,28 @@ export default function Manage() {
     const updateRef = React.useRef(0);
 
     React.useEffect(() => {
+        const handleKeyDown = (e) => {
+
+            // CTRL + SPACE
+            if (e.ctrlKey && e.code === "Space") {
+                e.preventDefault();
+                handleCreate();
+            }
+
+            // ESC
+            if (e.key === "Escape") {
+                e.preventDefault();
+                setModalOpen(false);
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+
+    React.useEffect(() => {
 
         getData();
 

@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { AppBar, Toolbar, Box, IconButton, Typography,
-    Menu, MenuItem } from "@mui/material";
+import { AppBar, Toolbar, Box, IconButton, Typography, 
+    Button, Menu, Avatar, Divider, ListSubheader, 
+    MenuList, MenuItem, ListItemIcon, ListItemText, } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import InfoIcon from "@mui/icons-material/Info";
@@ -9,6 +10,9 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import SettingsIcon from "@mui/icons-material/Settings";
+import QuizIcon from "@mui/icons-material/Quiz";
+import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
+
 import { languages, currLang } from "./Language";
 
 import { useTheme, useMediaQuery } from "@mui/material";
@@ -106,9 +110,18 @@ export default function Footer() {
                                     open={Boolean(testAnchor)}
                                     onClose={closeTestMenu}
                                 >
-                                    <MenuItem onClick={() => handleMenuClick("/test1")}>Test 1</MenuItem>
-                                    <MenuItem onClick={() => handleMenuClick("/test2")}>Test 2</MenuItem>
-                                    <MenuItem onClick={() => handleMenuClick("/test3")}>Test 3</MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/test1")}>
+                                        <ListItemIcon><QuizIcon /></ListItemIcon>
+                                        <ListItemText>Test 1</ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/test2")}>
+                                        <ListItemIcon><QuizIcon /></ListItemIcon>
+                                        <ListItemText>Test 2</ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/test3")}>
+                                        <ListItemIcon><QuizIcon /></ListItemIcon>
+                                        <ListItemText>Test 3</ListItemText>
+                                    </MenuItem>
                                 </Menu>
 
                             <MyMenuItem 
@@ -122,9 +135,18 @@ export default function Footer() {
                                     open={Boolean(aboutMenu)}
                                     onClose={closeAboutMenu}
                                 >
-                                    <MenuItem onClick={() => handleMenuClick("/privacyPolicy")}>Privacy Policy</MenuItem>
-                                    <MenuItem onClick={() => handleMenuClick("/termsOfService")}>Terms of Service</MenuItem>
-                                    <MenuItem onClick={() => handleMenuClick("/about")}>About</MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/privacyPolicy")}>
+                                        <ListItemIcon><PrivacyTipIcon /></ListItemIcon>
+                                        <ListItemText>Privacy Policy</ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/termsOfService")}>
+                                        <ListItemIcon><DescriptionIcon /></ListItemIcon>
+                                        <ListItemText>Terms of Service</ListItemText>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => handleMenuClick("/about")}>
+                                        <ListItemIcon><HelpOutlineIcon /></ListItemIcon>
+                                        <ListItemText>About</ListItemText>
+                                    </MenuItem>
                                 </Menu>
 
                         </Box>
