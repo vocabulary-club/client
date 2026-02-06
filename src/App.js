@@ -78,7 +78,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/privacyPolicy"
+                            path="/privacy-policy"
                             element={
                                 <ProtectedRoute>
                                     <PrivacyPolicy />
@@ -86,7 +86,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/termsOfService"
+                            path="/term-of-service"
                             element={
                                 <ProtectedRoute>
                                     <TermsOfService />

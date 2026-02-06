@@ -202,11 +202,11 @@ export default function Header() {
                                     open={Boolean(aboutMenu)}
                                     onClose={closeAboutMenu}
                                 >
-                                    <MenuItem onClick={() => handleMenuClick("/privacyPolicy")}>
+                                    <MenuItem onClick={() => handleMenuClick("/privacy-policy")}>
                                         <ListItemIcon><PrivacyTipIcon /></ListItemIcon>
                                         <ListItemText>Privacy Policy</ListItemText>
                                     </MenuItem>
-                                    <MenuItem onClick={() => handleMenuClick("/termsOfService")}>
+                                    <MenuItem onClick={() => handleMenuClick("/term-of-service")}>
                                         <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                         <ListItemText>Terms of Service</ListItemText>
                                     </MenuItem>
