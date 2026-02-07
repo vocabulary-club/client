@@ -13,11 +13,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import QuizIcon from "@mui/icons-material/Quiz";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 
-import { languages, currLang } from "./Language";
-
+import { Languages, CurrLang } from "./Language";
 import { useTheme, useMediaQuery } from "@mui/material";
-
-const t = languages[currLang];
 
 const MyMenuItem = ({ icon, label, onClick }) => {
     return (
@@ -46,6 +43,8 @@ const MyMenuItem = ({ icon, label, onClick }) => {
 
 export default function Footer() {
 
+    const [lang, setLang] = React.useState("mn");
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -53,6 +52,10 @@ export default function Footer() {
 
     const [testAnchor, setTestAnchor] = React.useState(null);
     const [aboutMenu, setAboutMenu] = React.useState(null);
+
+    React.useEffect(() => {
+        
+    }, []);
 
     const handleMenuClick = (path) => {
         navigate(path, { replace: true });
@@ -97,11 +100,11 @@ export default function Footer() {
                                 height: "100%",
                             }}
                         >
-                            <MyMenuItem icon={<HomeIcon />} label={t.home} onClick={() => handleMenuClick("/")} />
-                            <MyMenuItem icon={<PostAddIcon />} label={t.newWord} onClick={() => handleMenuClick("/manage")} />
+                            <MyMenuItem icon={<HomeIcon />} label={Languages[lang].home} onClick={() => handleMenuClick("/")} />
+                            <MyMenuItem icon={<PostAddIcon />} label={Languages[lang].newWord} onClick={() => handleMenuClick("/manage")} />
                             <MyMenuItem 
                                 icon={<MenuBookIcon />} 
-                                label={t.test} 
+                                label={Languages[lang].test} 
                                 onClick={openTestMenu} >
                             </MyMenuItem>
 
@@ -126,7 +129,7 @@ export default function Footer() {
 
                             <MyMenuItem 
                                 icon={<InfoIcon />} 
-                                label={t.about} 
+                                label={Languages[lang].about} 
                                 onClick={openAboutMenu} >
                             </MyMenuItem>
 
