@@ -14,6 +14,9 @@ export const Languages = {
         securityDesc: `For cybersecurity and privacy reasons, the system 
                 does not store users’ personal information, and it allows 
                 login through Google and Facebook accounts.`,
+        chooseLanguage: "Choose language!",
+        googleLogin: "Google Login",
+        facebookLogin: "Facebook Login",
     },
     mn: {
         home: "Эхлэл",
@@ -29,6 +32,9 @@ export const Languages = {
         securityDesc: `Цахим аюулгүй байдлын үүднээс системд хэрэглэгчийн 
                 хувийн мэдээллийг хадгалахгүй ба Google болон Facebook Login 
                 ашиглан нэвтрэх боломжтой.`,
+        chooseLanguage: "Хэлээ сонго!",
+        googleLogin: "Google хаягаар нэвтрэх",
+        facebookLogin: "Facebook хаягаар нэвтрэх",
     },
 };
 

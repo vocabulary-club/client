@@ -2,7 +2,7 @@ import React from 'react';
 import ApiService from "../services/ApiService";
 
 import { Box, Button, Typography, Paper,
-    ToggleButton, ToggleButtonGroup } from "@mui/material";
+    ToggleButton, ToggleButtonGroup, Tooltip, } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 
@@ -28,15 +28,18 @@ export default function Login() {
                 mb={2}
                 sx={{ width: 360 }}
             >
-                <ToggleButtonGroup
-                    value={lang}
-                    exclusive
-                    onChange={(e, v) => v && setLang(v)}
-                    size="small"                    
-                >
-                    <ToggleButton sx={{ width: 100, }} value="mn">Монгол Хэл</ToggleButton>
-                    <ToggleButton sx={{ width: 100, }} value="en">English</ToggleButton>
-                </ToggleButtonGroup>
+                <Tooltip title={Languages[lang].chooseLanguage}>
+                    <ToggleButtonGroup
+                        value={lang}
+                        exclusive
+                        onChange={(e, v) => v && setLang(v)}
+                        size="small"                    
+                    >
+                        <ToggleButton sx={{ width: 100, }} value="mn">Монгол Хэл</ToggleButton>
+                        <ToggleButton sx={{ width: 100, }} value="en">English</ToggleButton>
+                    </ToggleButtonGroup>
+                </Tooltip>
+                
             </Box>
 
             <Typography
@@ -59,7 +62,7 @@ export default function Login() {
                             textTransform: "none",
                         }}
                     >
-                        Google Login
+                        {Languages[lang].googleLogin}
                     </Button>
 
                     <Button
@@ -72,7 +75,7 @@ export default function Login() {
                             textTransform: "none",
                         }}
                     >
-                        Facebook Login
+                        {Languages[lang].facebookLogin}
                     </Button>
                 </Box>
 
