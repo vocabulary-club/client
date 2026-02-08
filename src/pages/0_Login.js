@@ -2,15 +2,18 @@ import React from 'react';
 import ApiService from "../services/ApiService";
 
 import { Box, Button, Typography, Paper,
-    ToggleButton, ToggleButtonGroup, Tooltip, } from "@mui/material";
+    ToggleButton, ToggleButtonGroup, Tooltip, Link, } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import DescriptionIcon from "@mui/icons-material/Description";
+import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 
-import { Languages, CurrLang } from "../components/Language";
+import { useLang } from "../contexts/LangContext";
+import { Languages } from "../components/Language";
 
 export default function Login() {
 
-    const [lang, setLang] = React.useState("mn");
+    const { lang, setLang } = useLang();
 
     return (
         <Box
@@ -87,6 +90,50 @@ export default function Login() {
             >
                 {Languages[lang].securityDesc}
             </Typography>
+
+            <Paper sx={{ p: 2, width: 360, mb: 3, }} elevation={3}>
+
+                <Box display="flex" flexDirection="column" gap={1}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<DescriptionIcon />}
+                        fullWidth
+                        component="a"
+                        sx={{
+                            textTransform: "none",
+                        }}
+                    >
+                        <Link
+                            href="https://shineug.com/term-of-service"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            underline="hover"
+                        >
+                            {Languages[lang].termOfService}
+                        </Link>                        
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        startIcon={<PrivacyTipIcon />}
+                        fullWidth
+                        component="a"
+                        sx={{
+                            textTransform: "none",
+                        }}
+                    >
+                        <Link
+                            href="https://shineug.com/privacy-policy"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            underline="hover"
+                        >
+                            {Languages[lang].privacyPolicy}
+                        </Link>                        
+                    </Button>
+                </Box>
+
+            </Paper>
 
         </Box>
     );
