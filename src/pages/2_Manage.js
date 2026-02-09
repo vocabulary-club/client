@@ -262,7 +262,7 @@ export default function Manage() {
                             </Stack>
                             ) : (
                             <Stack direction="row" spacing={1}>
-                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCreate} >{Languages[lang].lastDay}</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCreate} >{Languages[lang].addWord}</Button>
                                 <Button variant="contained" sx={{ width: 120 }} onClick={handleUpdate} >{Languages[lang].fixWord}</Button>
                                 <Button variant="contained" sx={{ width: 120 }} onClick={handleCancel} >{Languages[lang].cancel}</Button>
                                 <Button variant="contained" sx={{ width: 120 }} onClick={handleDelete} >{Languages[lang].delete}</Button>
@@ -284,6 +284,17 @@ export default function Manage() {
                     checkboxSelection={true}
                     rowSelectionModel={selectionModel}
                     onRowSelectionModelChange={handleCheckBoxClick}
+                    sx={{
+                        '& .MuiDataGrid-cell': {
+                        whiteSpace: 'normal !important',
+                        wordBreak: 'break-word',
+                        lineHeight: '1.4 !important',
+                        display: 'flex',
+                        alignItems: 'start',   // top align
+                        py: 1,
+                        },
+                    }}
+                    getRowHeight={() => 'auto'}
                 />
             </Box>
 

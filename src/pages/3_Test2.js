@@ -332,7 +332,16 @@ export default function Test2() {
                                 bgcolor: "error.light",
                                 "&:hover": { bgcolor: "error.main" },
                             },
+                            '& .MuiDataGrid-cell': {
+                                whiteSpace: 'normal !important',
+                                wordBreak: 'break-word',
+                                lineHeight: '1.4 !important',
+                                display: 'flex',
+                                alignItems: 'start',   // top align
+                                py: 1,
+                            },
                         }}
+                        getRowHeight={() => 'auto'}
                     />
                 </Box>
             )}

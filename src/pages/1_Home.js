@@ -87,6 +87,17 @@ export default function Home() {
                     columns={columns}
                     disableColumnMenu
                     checkboxSelection={false}
+                    sx={{
+                        '& .MuiDataGrid-cell': {
+                        whiteSpace: 'normal !important',
+                        wordBreak: 'break-word',
+                        lineHeight: '1.4 !important',
+                        display: 'flex',
+                        alignItems: 'start',   // top align
+                        py: 1,
+                        },
+                    }}
+                    getRowHeight={() => 'auto'}
                 />
             </Box>
 
