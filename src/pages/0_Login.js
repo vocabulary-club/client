@@ -84,13 +84,6 @@ export default function Login() {
 
             </Paper>
 
-            <Typography
-                variant="body2"
-                sx={{ maxWidth: 360, mb: 2, color: "text.secondary", textAlign: "justify", }}
-            >
-                {Languages[lang].securityDesc}
-            </Typography>
-
             <Paper sx={{ p: 2, width: 360, mb: 3, }} elevation={3}>
 
                 <Box display="flex" flexDirection="column" gap={1}>
@@ -133,7 +126,14 @@ export default function Login() {
                     </Button>
                 </Box>
 
-            </Paper>
+            </Paper>            
+
+            <Typography
+                variant="body2"
+                sx={{ maxWidth: 360, mb: 2, color: "text.secondary", textAlign: "justify", }}
+            >
+                {Languages[lang].securityDesc}
+            </Typography>
 
         </Box>
     );
