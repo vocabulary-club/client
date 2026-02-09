@@ -67,12 +67,35 @@ export default function Header() {
                             overflow: "hidden",
                         }}
                     >
+                        {/* LEFT EMPTY AREA */}
+                        <Box
+                            sx={{
+                                width: 80,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >  
+                            <IconButton
+                                sx={{ color: "white" }}
+                                onClick={() => handleMenuClick("/")}
+                            >
+                                <Avatar
+                                    src="/logo192.png"
+                                    alt="Logo"
+                                    sx={{ width: 32, height: 32, }}
+                                />
+                                
+                            </IconButton>                            
+                        </Box>
+
                         {/* LEFT USER AREA */}
                         <Box
                             sx={{
-                                height: "100%",
+                                width: 80,
                                 display: "flex",
                                 alignItems: "center",
+                                justifyContent: "center"
                             }}
                         >
                             <IconButton
@@ -95,42 +118,36 @@ export default function Header() {
                             </IconButton>
                         </Box>
 
+                        {/* RIGHT LANGUAGE AREA */}
                         <Box
                             sx={{
+                                width: 80,
                                 display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
                             }}
-                        >  
-                            {/* RIGHT LANGUAGE AREA */}
-                            <Box
-                                sx={{
-                                    width: 60,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}
-                            >                              
-                                <Button
-                                    color="inherit"
-                                    onClick={() => setLang(lang == "en" ? "mn" : "en")}
-                                    sx={{fontSize: 20, width: 120, }}
-                                >
-                                    {Languages[lang].language}
-                                </Button>
-                            </Box>
-
-                            {/* RIGHT USER AREA */}
-                            <Box
-                                sx={{
-                                    width: 60,               // symmetric with left
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}
+                        >                              
+                            <Button
+                                color="inherit"
+                                onClick={() => setLang(lang == "en" ? "mn" : "en")}
+                                sx={{fontSize: 20, width: 120, }}
                             >
-                                <IconButton color="inherit" onClick={(e) => handleLogout(e)}>
-                                    <LogoutIcon />
-                                </IconButton>
-                            </Box>
+                                {Languages[lang].language}
+                            </Button>
+                        </Box>
+
+                        {/* RIGHT USER AREA */}
+                        <Box
+                            sx={{
+                                width: 80,               // symmetric with left
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <IconButton color="inherit" onClick={(e) => handleLogout(e)}>
+                                <LogoutIcon />
+                            </IconButton>
                         </Box>
 
                     </Toolbar>
@@ -144,6 +161,28 @@ export default function Header() {
                             display: "flex"
                         }}
                     >
+                        {/* LEFT EMPTY AREA */}
+                        <Box
+                            sx={{
+                                width: 60,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >  
+                            <IconButton
+                                sx={{ color: "white" }}
+                                onClick={() => handleMenuClick("/")}
+                            >
+                                <Avatar
+                                    src="/logo192.png"
+                                    alt="Logo"
+                                    sx={{ width: 32, height: 32, }}
+                                />
+                                
+                            </IconButton>                            
+                        </Box>
+
                         {/* LEFT USER AREA */}
                         <Box
                             sx={{
@@ -171,17 +210,6 @@ export default function Header() {
                                 }
                                 
                             </IconButton>
-                        </Box>
-
-                        {/* LEFT EMPTY AREA */}
-                        <Box
-                            sx={{
-                                width: 60,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}
-                        >  
                         </Box>
 
                         {/* CENTER MENUS */}
@@ -266,14 +294,13 @@ export default function Header() {
                                 alignItems: "center",
                                 justifyContent: "center"
                             }}
-                        >                              
-                            <Button
-                                color="inherit"
+                        >
+                            <IconButton
+                                sx={{ color: "white", fontSize: 16, }}
                                 onClick={() => setLang(lang == "en" ? "mn" : "en")}
-                                sx={{fontSize: 20, width: 120, }}
                             >
-                                {Languages[lang].language}
-                            </Button>
+                                {Languages[lang].language}                                
+                            </IconButton>
                         </Box>
 
                         {/* RIGHT USER AREA */}
