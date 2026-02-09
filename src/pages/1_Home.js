@@ -5,7 +5,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Paper, Stack, Radio, RadioGroup, FormControlLabel, FormControl, ToggleButton, ToggleButtonGroup, } from "@mui/material";
 import { useTheme, useMediaQuery } from "@mui/material";
 
+import { useLang } from "../contexts/LangContext";
+import { Languages } from "../components/Language";
+
 export default function Home() {
+
+    const { lang, setLang } = useLang();
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -56,18 +61,18 @@ export default function Home() {
                             onChange={(e, val) => val && setDayVal(val)}
                             size="small"                            
                         >
-                            <ToggleButton value="last" sx={{ fontSize: 12 }} >Last Day</ToggleButton>
-                            <ToggleButton value="second last" sx={{ fontSize: 12 }} >A Day Before</ToggleButton>
-                            <ToggleButton value="third last" sx={{ fontSize: 12 }} >2 Days Before</ToggleButton>
+                            <ToggleButton value="last" sx={{ fontSize: 12 }} >{Languages[lang].lastDay}</ToggleButton>
+                            <ToggleButton value="second last" sx={{ fontSize: 12 }} >{Languages[lang].aDayBefore}</ToggleButton>
+                            <ToggleButton value="third last" sx={{ fontSize: 12 }} >{Languages[lang].twoDaysBefore}</ToggleButton>
                         </ToggleButtonGroup>
                     </Stack>
                     ) : (
                     <Stack direction="row" alignItems="center" spacing={1}>
                         <FormControl>
                             <RadioGroup row name="day" value={dayVal} onChange={(e) => setDayVal(e.target.value)} >
-                                <FormControlLabel value="last" control={<Radio />} label="Last Day" />
-                                <FormControlLabel value="second last" control={<Radio />} label="A Day Before" />
-                                <FormControlLabel value="third last" control={<Radio />} label="2 Days Before" />
+                                <FormControlLabel value="last" control={<Radio />} label={Languages[lang].lastDay} />
+                                <FormControlLabel value="second last" control={<Radio />} label={Languages[lang].aDayBefore} />
+                                <FormControlLabel value="third last" control={<Radio />} label={Languages[lang].twoDaysBefore} />
                             </RadioGroup>
                         </FormControl>
                     </Stack>

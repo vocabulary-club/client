@@ -9,6 +9,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Modal, Box, Typography, TextField, Button, Stack, Paper, IconButton, } from "@mui/material";
 import { useTheme, useMediaQuery } from "@mui/material";
 
+import { useLang } from "../contexts/LangContext";
+import { Languages } from "../components/Language";
+
 const MenuItem = ({ icon, label, onClick, color }) => {
     return (
         <Box
@@ -34,6 +37,8 @@ const MenuItem = ({ icon, label, onClick, color }) => {
 
 export default function Manage() {
 
+    const { lang, setLang } = useLang();
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -43,7 +48,7 @@ export default function Manage() {
     const [selectionModel, setSelectionModel] = React.useState({ type: 'include', ids: new Set(), });
 
     const [modalOpen, setModalOpen] = React.useState(false);
-    const [modalTitle, setModalTitle] = React.useState("Add new word?");
+    const [modalTitle, setModalTitle] = React.useState("");
 
     const [firstWord, setFirstWord] = React.useState("");
     const [secondWord, setSecondWord] = React.useState("");
@@ -85,7 +90,7 @@ export default function Manage() {
 
         setFirstWord("");
         setSecondWord("");
-        setModalTitle("Add new word?");
+        setModalTitle(Languages[lang].addNewWord);
         setModalOpen(true);
 
         updateRef.current = 0;
@@ -101,7 +106,7 @@ export default function Manage() {
 
         const selectedId = [...selectionModel.ids][0];
         if (!selectedId) {
-            alert("Please select a row first!");
+            alert(Languages[lang].selectFirst);
             return;
         }
 
@@ -110,7 +115,7 @@ export default function Manage() {
 
         setFirstWord(selectedRow.eng_word);
         setSecondWord(selectedRow.mon_word);
-        setModalTitle("Update old word?");
+        setModalTitle(Languages[lang].fixOldWord);
         setModalOpen(true);
 
         updateRef.current = 1;
@@ -126,14 +131,14 @@ export default function Manage() {
 
         const selectedId = [...selectionModel.ids][0];
         if (!selectedId) {
-            alert("Please select a row first!");
+            alert(Languages[lang].selectFirst);
             return;
         }
 
         const selectedRow = getSelectedRow();        
         if (!selectedRow) return;
  
-        if(window.confirm("Are you sure to delete?")) {
+        if(window.confirm(Languages[lang].deleteQuesion)) {
             const data = {
                 dic_id : selectedRow.dic_id,
                 eng_id : selectedRow.eng_id,
@@ -145,14 +150,14 @@ export default function Manage() {
             })
             .then((response) => response.json())
             .then((data) => { getData(); })
-            .catch((error) => { alert("Failed to delete."); });
+            .catch((error) => { alert(Languages[lang].failed); });
         }
     }
 
     const handleModalSave = (e) => {
 
         if(!firstWord || !secondWord) {
-            alert("Enter your words!");
+            alert(Languages[lang].enterWords);
             return;
         }
 
@@ -176,7 +181,7 @@ export default function Manage() {
         })
         .then((response) => response.json())
         .then((data) => { getData(); })
-        .catch((error) => { alert("Failed to save."); });
+        .catch((error) => { alert(Languages[lang].failed); });
 
         setModalOpen(false);
     }
@@ -238,7 +243,7 @@ export default function Manage() {
                     alignItems={{ xs: "stretch", sm: "center" }}
                     spacing={1} >
 
-                    <TextField size="small" label="Search"
+                    <TextField size="small" label={Languages[lang].search}
                         value={searchText} onChange={handleSearch}
                         sx={{ width: { xs: "100%", sm: 256 } }} />
 
@@ -250,17 +255,17 @@ export default function Manage() {
                                 <MenuItem icon={<EditIcon />} label={"Fix Word"} onClick={(e) => handleUpdate(e)} color="info"/>
                                 <MenuItem icon={<ClearIcon />} label={"Cancel"} onClick={(e) => handleCancel(e)} color="warning"/>
                                 <MenuItem icon={<DeleteIcon />} label={"Delete"} onClick={(e) => handleDelete(e)} color="error"/> */}
-                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleCreate} >New Word</Button>
-                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleUpdate} >Fix Word</Button>
-                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleCancel} >Cancel</Button>
-                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleDelete} >Delete</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleCreate} >{Languages[lang].addWord}</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleUpdate} >{Languages[lang].fixWord}</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleCancel} >{Languages[lang].cancel}</Button>
+                                <Button variant="contained" sx={{ width: 80, fontSize: 12, }} onClick={handleDelete} >{Languages[lang].delete}</Button>
                             </Stack>
                             ) : (
                             <Stack direction="row" spacing={1}>
-                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCreate} >New Word</Button>
-                                <Button variant="contained" sx={{ width: 120 }} onClick={handleUpdate} >Fix Word</Button>
-                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCancel} >Cancel</Button>
-                                <Button variant="contained" sx={{ width: 120 }} onClick={handleDelete} >Delete</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCreate} >{Languages[lang].lastDay}</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleUpdate} >{Languages[lang].fixWord}</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleCancel} >{Languages[lang].cancel}</Button>
+                                <Button variant="contained" sx={{ width: 120 }} onClick={handleDelete} >{Languages[lang].delete}</Button>
                             </Stack>                            
                         )}
 

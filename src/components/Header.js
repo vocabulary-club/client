@@ -15,10 +15,15 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
+import { useLang } from "../contexts/LangContext";
+import { Languages } from "../components/Language";
+
 import { useTheme, useMediaQuery } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Header() {
+
+    const { lang, setLang } = useLang();
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -62,7 +67,7 @@ export default function Header() {
                             overflow: "hidden",
                         }}
                     >
-                        {/* Left - User */}
+                        {/* LEFT USER AREA */}
                         <Box
                             sx={{
                                 height: "100%",
@@ -90,19 +95,44 @@ export default function Header() {
                             </IconButton>
                         </Box>
 
-                        {/* RIGHT USER AREA */}
                         <Box
                             sx={{
-                                width: 60,               // symmetric with left
                                 display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center"
                             }}
-                        >
-                            <IconButton color="inherit" onClick={(e) => handleLogout(e)}>
-                                <LogoutIcon />
-                            </IconButton>
+                        >  
+                            {/* RIGHT LANGUAGE AREA */}
+                            <Box
+                                sx={{
+                                    width: 60,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}
+                            >                              
+                                <Button
+                                    color="inherit"
+                                    onClick={() => setLang(lang == "en" ? "mn" : "en")}
+                                    sx={{fontSize: 20, width: 120, }}
+                                >
+                                    {Languages[lang].language}
+                                </Button>
+                            </Box>
+
+                            {/* RIGHT USER AREA */}
+                            <Box
+                                sx={{
+                                    width: 60,               // symmetric with left
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}
+                            >
+                                <IconButton color="inherit" onClick={(e) => handleLogout(e)}>
+                                    <LogoutIcon />
+                                </IconButton>
+                            </Box>
                         </Box>
+
                     </Toolbar>
                     ) : ( 
                     <Toolbar
@@ -143,6 +173,17 @@ export default function Header() {
                             </IconButton>
                         </Box>
 
+                        {/* LEFT EMPTY AREA */}
+                        <Box
+                            sx={{
+                                width: 60,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >  
+                        </Box>
+
                         {/* CENTER MENUS */}
                         <Box
                             sx={{
@@ -153,11 +194,11 @@ export default function Header() {
                             }}
                         >
                             <Button color="inherit" onClick={() => handleMenuClick("/")} sx={{fontSize: 20, width: 120, }} >
-                                Home
+                                {Languages[lang].home}
                             </Button>
 
                             <Button color="inherit" onClick={() => handleMenuClick("/manage")} sx={{fontSize: 20, width: 120, }} >
-                                New Word
+                                {Languages[lang].addWord}
                             </Button>
 
                             <Button
@@ -166,7 +207,7 @@ export default function Header() {
                                 onClick={openTestMenu}
                                 sx={{fontSize: 20, width: 120, }}
                             >
-                                Test
+                                {Languages[lang].test}
                             </Button>
 
                                 <Menu
@@ -194,7 +235,7 @@ export default function Header() {
                                 onClick={openAboutMenu}
                                 sx={{fontSize: 20, width: 120, }}
                             >
-                                About
+                                {Languages[lang].about}
                             </Button>
 
                                 <Menu
@@ -202,19 +243,37 @@ export default function Header() {
                                     open={Boolean(aboutMenu)}
                                     onClose={closeAboutMenu}
                                 >
-                                    <MenuItem onClick={() => handleMenuClick("/privacy-policy")}>
+                                    {/* <MenuItem onClick={() => handleMenuClick("/privacy-policy")}>
                                         <ListItemIcon><PrivacyTipIcon /></ListItemIcon>
                                         <ListItemText>Privacy Policy</ListItemText>
                                     </MenuItem>
                                     <MenuItem onClick={() => handleMenuClick("/term-of-service")}>
                                         <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                         <ListItemText>Terms of Service</ListItemText>
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     <MenuItem onClick={() => handleMenuClick("/about")}>
                                         <ListItemIcon><HelpOutlineIcon /></ListItemIcon>
                                         <ListItemText>About</ListItemText>
                                     </MenuItem>
                                 </Menu>
+                        </Box>
+
+                        {/* RIGHT LANGUAGE AREA */}
+                        <Box
+                            sx={{
+                                width: 60,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >                              
+                            <Button
+                                color="inherit"
+                                onClick={() => setLang(lang == "en" ? "mn" : "en")}
+                                sx={{fontSize: 20, width: 120, }}
+                            >
+                                {Languages[lang].language}
+                            </Button>
                         </Box>
 
                         {/* RIGHT USER AREA */}

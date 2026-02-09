@@ -13,7 +13,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import QuizIcon from "@mui/icons-material/Quiz";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 
-import { Languages, CurrLang } from "./Language";
+import { useLang } from "../contexts/LangContext";
+import { Languages } from "../components/Language";
+
 import { useTheme, useMediaQuery } from "@mui/material";
 
 const MyMenuItem = ({ icon, label, onClick }) => {
@@ -43,7 +45,7 @@ const MyMenuItem = ({ icon, label, onClick }) => {
 
 export default function Footer() {
 
-    const [lang, setLang] = React.useState("mn");
+    const { lang, setLang } = useLang();
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -101,7 +103,7 @@ export default function Footer() {
                             }}
                         >
                             <MyMenuItem icon={<HomeIcon />} label={Languages[lang].home} onClick={() => handleMenuClick("/")} />
-                            <MyMenuItem icon={<PostAddIcon />} label={Languages[lang].newWord} onClick={() => handleMenuClick("/manage")} />
+                            <MyMenuItem icon={<PostAddIcon />} label={Languages[lang].addWord} onClick={() => handleMenuClick("/manage")} />
                             <MyMenuItem 
                                 icon={<MenuBookIcon />} 
                                 label={Languages[lang].test} 
@@ -138,14 +140,14 @@ export default function Footer() {
                                     open={Boolean(aboutMenu)}
                                     onClose={closeAboutMenu}
                                 >
-                                    <MenuItem onClick={() => handleMenuClick("/privacy-policy")}>
+                                    {/* <MenuItem onClick={() => handleMenuClick("/privacy-policy")}>
                                         <ListItemIcon><PrivacyTipIcon /></ListItemIcon>
                                         <ListItemText>Privacy Policy</ListItemText>
                                     </MenuItem>
                                     <MenuItem onClick={() => handleMenuClick("/term-of-service")}>
                                         <ListItemIcon><DescriptionIcon /></ListItemIcon>
                                         <ListItemText>Terms of Service</ListItemText>
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     <MenuItem onClick={() => handleMenuClick("/about")}>
                                         <ListItemIcon><HelpOutlineIcon /></ListItemIcon>
                                         <ListItemText>About</ListItemText>
