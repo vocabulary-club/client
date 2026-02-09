@@ -286,12 +286,12 @@ export default function Manage() {
                     onRowSelectionModelChange={handleCheckBoxClick}
                     sx={{
                         '& .MuiDataGrid-cell': {
-                        whiteSpace: 'normal !important',
-                        wordBreak: 'break-word',
-                        lineHeight: '1.4 !important',
-                        display: 'flex',
-                        alignItems: 'start',   // top align
-                        py: 1,
+                            whiteSpace: 'normal !important',
+                            wordBreak: 'break-word',
+                            lineHeight: '1.4 !important',
+                            display: 'flex',
+                            alignItems: 'center',   // top align
+                            py: 1,
                         },
                     }}
                     getRowHeight={() => 'auto'}

@@ -337,7 +337,7 @@ export default function Test2() {
                                 wordBreak: 'break-word',
                                 lineHeight: '1.4 !important',
                                 display: 'flex',
-                                alignItems: 'start',   // top align
+                                alignItems: 'center',   // top align
                                 py: 1,
                             },
                         }}
