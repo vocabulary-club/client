@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/0_Login";
+import NotFound from "./pages/0_NotFound";
 import Home from "./pages/1_Home";
 import Manage from "./pages/2_Manage";
 import Test1 from "./pages/3_Test1";
@@ -31,6 +32,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/term-of-service" element={<TermsOfService />} />
+                        <Route path="*" element={<NotFound />} />
 
                         <Route element={<MainLayout />}>
                             <Route
