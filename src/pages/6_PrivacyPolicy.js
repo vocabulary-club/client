@@ -139,6 +139,15 @@ export default function PrivacyPolicy() {
                             <Typography paragraph sx={{ textAlign: "justify", }}>
                                 You have the right to request deletion of your information.
                             </Typography>
+
+                            <Link
+                                href="https://shineug.com/data-deletion"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                underline="hover"
+                            >
+                                https://shineug.com/data-deletion
+                            </Link>
                         </Box>
 
                         <Box mt={4}>
@@ -288,6 +297,15 @@ export default function PrivacyPolicy() {
                             <Typography paragraph sx={{ textAlign: "justify", }}>
                                 Та өөрийн мэдээллээ устгах эрхтэй.
                             </Typography>
+
+                            <Link
+                                href="https://shineug.com/data-deletion"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                underline="hover"
+                            >
+                                https://shineug.com/data-deletion
+                            </Link>
                         </Box>
 
                         <Box mt={4}>
