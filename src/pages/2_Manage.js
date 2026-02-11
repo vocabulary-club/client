@@ -167,7 +167,7 @@ export default function Manage() {
         };
 
         let url = "/create";
-        if(updateRef.current == 1) { 
+        if(updateRef.current === 1) { 
             url = "/update"; 
             
             const selectedRow = getSelectedRow();

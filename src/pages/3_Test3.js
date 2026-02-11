@@ -67,7 +67,7 @@ export default function Test3() {
 
         const answer = shuffledDataRef.current[shuffledIdxRef.current - 1].answer[parseInt(value, 10)];
         
-        if(answer.dic_id == shuffledDataRef.current[shuffledIdxRef.current - 1].dic_id) {
+        if(answer.dic_id === shuffledDataRef.current[shuffledIdxRef.current - 1].dic_id) {
             setResult("correct");
             if(!finishedDataRef.current[shuffledIdxRef.current - 1].result) {
                 finishedDataRef.current[shuffledIdxRef.current - 1].result = "correct";					

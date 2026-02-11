@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
                     p: 1,
                 }}
             >
-                {lang == "en" ? (
+                {lang === "en" ? (
                     <Paper
                         elevation={3}
                         sx={{
@@ -144,6 +144,10 @@ export default function PrivacyPolicy() {
                         <Box mt={4}>
                             <Typography variant="h6" fontWeight={600} gutterBottom>
                                 Terms of Service
+                            </Typography>
+
+                            <Typography paragraph sx={{ textAlign: "justify", }}>
+                                You can read the Terms of Service here:
                             </Typography>
                             
                             <Link
@@ -289,6 +293,10 @@ export default function PrivacyPolicy() {
                         <Box mt={4}>
                             <Typography variant="h6" fontWeight={600} gutterBottom>
                                 Үйлчилгээний нөхцөл
+                            </Typography>
+
+                            <Typography paragraph sx={{ textAlign: "justify", }}>
+                                Үйлчилгээний нөхцлийг эндээс уншина уу:
                             </Typography>
                             
                             <Link

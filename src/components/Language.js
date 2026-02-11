@@ -34,6 +34,10 @@ export const Languages = {
 
         failed: "Failed!",
 
+        deleteUserAccount: "Are you sure to delete your account?\nYour vocabulary will be deleted as well.",
+        deleteUserAccountSucceed: "Your account has been deleted successfully.",
+        deleteUserAccountFailed: "Your account deletion has been failed!",
+
     },
     mn: {
         language: "EN",
@@ -69,5 +73,9 @@ export const Languages = {
         fixOldWord: "Хуучин үгээ засах",
 
         failed: "Амжилтгүй боллоо.",
+
+        deleteUserAccount: "Та гишүүнчлэлийн мэдээллээ усгахадаа итгэлтэй байна уу?\nТаны оруулсан үгсийн сан хамт устах болно.",
+        deleteUserAccountSucceed: "Таны мэдээллийг устгах явц ажилттай боллоо.",
+        deleteUserAccountFailed: "Таны мэдээллийг утсгах явц амжилгүй боллоо!",
     },
 };

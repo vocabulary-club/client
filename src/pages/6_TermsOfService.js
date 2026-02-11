@@ -23,7 +23,7 @@ export default function TermsOfService() {
                 }}
             >
 
-                {lang == "en" ? (
+                {lang === "en" ? (
                     <Paper
                         elevation={3}
                         sx={{
@@ -229,7 +229,7 @@ export default function TermsOfService() {
 
 
                         <Typography variant="body2" color="text.secondary" gutterBottom>
-                            <strong>Effective Date:</strong> [2026-12-31]
+                            <strong>Хүчин төгөлдөр огноо:</strong> [2026-12-31]
                         </Typography>
 
 
