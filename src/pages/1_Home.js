@@ -43,8 +43,9 @@ export default function Home() {
     };
 
     const columns = [
-        { field: "eng_word", headerName: "English", flex: 1 },
-        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+        { field: "word", headerName: "Word", flex: 1 },
+        { field: "definition", headerName: "Definition", flex: 1 },
+        // { field: "reg_ymd", headerName: "Date", maxWidth: 124, },
     ];
     
     return (
@@ -82,7 +83,7 @@ export default function Home() {
 
             <Box sx={{ flex: 1, minHeight: 0, height: "100%", }}>
                 <DataGrid
-                    getRowId={(row) => row.dic_id || null}
+                    getRowId={(row) => row.mean_id || null}
                     rows={dataList}
                     columns={columns}
                     disableColumnMenu

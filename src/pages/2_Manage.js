@@ -205,8 +205,9 @@ export default function Manage() {
     };
 
     const columns = [
-        { field: "word", headerName: "English", flex: 1 },
-        { field: "definition", headerName: "Mongolian", flex: 1 },
+        { field: "word", headerName: "Word", flex: 1 },
+        { field: "definition", headerName: "Definition", flex: 1 },
+        { field: "reg_ymd", headerName: "Date", maxWidth: 124, },
     ];
 
     const filteredList = React.useMemo(() => {
