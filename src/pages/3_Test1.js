@@ -22,7 +22,7 @@ export default function Test1() {
 
     const [action, setAction] = React.useState("stop");          // start, stop
     const [limit, setLimit] = React.useState("r10");    // last 10, rand 10, last 50, rand 50
-    const [lang, setLang] = React.useState("eng");          // eng, mon
+    const [lang, setLang] = React.useState("word");          // word, definition
     const [time, setTime] = React.useState(3);               // 2, 3
 
     const [testWord, setTestWord] = React.useState("");
@@ -78,10 +78,10 @@ export default function Test1() {
 
         const currData = shuffledDataRef.current[currIndex];
 
-        if (lang === "eng") {
-            setTestWord(currData?.eng_word || "");
+        if (lang === "word") {
+            setTestWord(currData?.word || "");
         } else {
-            setTestWord(currData?.mon_word || "");
+            setTestWord(currData?.definition || "");
         }
 
         finishedDataRef.current = [...finishedDataRef.current, currData];
@@ -126,8 +126,8 @@ export default function Test1() {
     };
 
     const columns = [
-        { field: "eng_word", headerName: "English", flex: 1 },
-        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+        { field: "word", headerName: "Word", flex: 1 },
+        { field: "definition", headerName: "Definition", flex: 1 },
     ];
 
     return (
@@ -165,12 +165,12 @@ export default function Test1() {
                             onChange={(e, val) => val && setLang(val)}
                             size="small"
                             >
-                            <ToggleButton value="eng">
-                                English
+                            <ToggleButton value="word">
+                                Word
                             </ToggleButton>
 
-                            <ToggleButton value="mon">
-                                Mongolian
+                            <ToggleButton value="definition">
+                                Meaning
                             </ToggleButton>
                         </ToggleButtonGroup>
 
@@ -237,7 +237,7 @@ export default function Test1() {
                         display: "flex",
                     }}>
                     <DataGrid
-                        getRowId={(row) => row.dic_id || null}
+                        getRowId={(row) => row.mean_id || null}
                         rows={dataList}
                         columns={columns}
                         disableColumnMenu

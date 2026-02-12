@@ -24,7 +24,7 @@ export default function Test3() {
 
     const [action, setAction] = React.useState("stop");          // start, stop
     const [limit, setLimit] = React.useState("r10");    // last 10, rand 10, last 50, rand 50
-    const [lang, setLang] = React.useState("eng");          // eng, mon
+    const [lang, setLang] = React.useState("word");          // word, definition
 
     const [testWord, setTestWord] = React.useState("");
     const [progress, setProgress] = React.useState(0);
@@ -67,7 +67,7 @@ export default function Test3() {
 
         const answer = shuffledDataRef.current[shuffledIdxRef.current - 1].answer[parseInt(value, 10)];
         
-        if(answer.dic_id === shuffledDataRef.current[shuffledIdxRef.current - 1].dic_id) {
+        if(answer.mean_id === shuffledDataRef.current[shuffledIdxRef.current - 1].mean_id) {
             setResult("correct");
             if(!finishedDataRef.current[shuffledIdxRef.current - 1].result) {
                 finishedDataRef.current[shuffledIdxRef.current - 1].result = "correct";					
@@ -99,18 +99,18 @@ export default function Test3() {
 
         const currData = shuffledDataRef.current[currIndex];
 
-        if (lang === "eng") {
-            setTestWord(currData?.eng_word || "");
-            setAnswer0(currData?.answer[0]?.mon_word || "");
-            setAnswer1(currData?.answer[1]?.mon_word || "");
-            setAnswer2(currData?.answer[2]?.mon_word || "");
-            setAnswer3(currData?.answer[3]?.mon_word || "");            
+        if (lang === "word") {
+            setTestWord(currData?.word || "");
+            setAnswer0(currData?.answer[0]?.definition || "");
+            setAnswer1(currData?.answer[1]?.definition || "");
+            setAnswer2(currData?.answer[2]?.definition || "");
+            setAnswer3(currData?.answer[3]?.definition || "");            
         } else {
-            setTestWord(currData?.mon_word || "");
-            setAnswer0(currData?.answer[0]?.eng_word || "");
-            setAnswer1(currData?.answer[1]?.eng_word || "");
-            setAnswer2(currData?.answer[2]?.eng_word || "");
-            setAnswer3(currData?.answer[3]?.eng_word || "");
+            setTestWord(currData?.definition || "");
+            setAnswer0(currData?.answer[0]?.word || "");
+            setAnswer1(currData?.answer[1]?.word || "");
+            setAnswer2(currData?.answer[2]?.word || "");
+            setAnswer3(currData?.answer[3]?.word || "");
         }
 
         finishedDataRef.current = [...finishedDataRef.current, currData];
@@ -147,7 +147,7 @@ export default function Test3() {
         shuffledDataRef.current.forEach((item, index) => {
 
             let answer = shuffle(originDataRef.current).slice(0, 4);            
-            if(answer.find((x) => x.dic_id === item.dic_id)) {
+            if(answer.find((x) => x.mean_id === item.mean_id)) {
                 
             } else{
                 answer = answer.slice(0, 3);
@@ -168,8 +168,8 @@ export default function Test3() {
     };
 
     const columns = [
-        { field: "eng_word", headerName: "English", flex: 1 },
-        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+        { field: "word", headerName: "Word", flex: 1 },
+        { field: "definition", headerName: "Definition", flex: 1 },
     ];
 
     return (
@@ -207,12 +207,12 @@ export default function Test3() {
                             onChange={(e, val) => val && setLang(val)}
                             size="small"
                             >
-                            <ToggleButton value="eng">
-                                English
+                            <ToggleButton value="word">
+                                Word
                             </ToggleButton>
 
-                            <ToggleButton value="mon">
-                                Mongolian
+                            <ToggleButton value="definition">
+                                Meaning
                             </ToggleButton>
                         </ToggleButtonGroup>
 
@@ -326,7 +326,7 @@ export default function Test3() {
                         display: "flex",
                     }}>
                     <DataGrid
-                        getRowId={(row) => row.dic_id || null}
+                        getRowId={(row) => row.mean_id || null}
                         rows={dataList}
                         columns={columns}
                         disableColumnMenu
