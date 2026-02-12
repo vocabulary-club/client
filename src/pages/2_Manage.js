@@ -50,8 +50,8 @@ export default function Manage() {
     const [modalOpen, setModalOpen] = React.useState(false);
     const [modalTitle, setModalTitle] = React.useState("");
 
-    const [firstWord, setFirstWord] = React.useState("");
-    const [secondWord, setSecondWord] = React.useState("");
+    const [word, setWord] = React.useState("");
+    const [definition, setDefinition] = React.useState("");
 
     const updateRef = React.useRef(0);
 
@@ -88,8 +88,8 @@ export default function Manage() {
 
         setSelectionModel({ type: 'include', ids: new Set(), });
 
-        setFirstWord("");
-        setSecondWord("");
+        setWord("");
+        setDefinition("");
         setModalTitle(Languages[lang].addNewWord);
         setModalOpen(true);
 
@@ -113,8 +113,8 @@ export default function Manage() {
         const selectedRow = getSelectedRow();        
         if (!selectedRow) return;
 
-        setFirstWord(selectedRow.eng_word);
-        setSecondWord(selectedRow.mon_word);
+        setWord(selectedRow.word);
+        setDefinition(selectedRow.definition);
         setModalTitle(Languages[lang].fixOldWord);
         setModalOpen(true);
 
@@ -140,9 +140,8 @@ export default function Manage() {
  
         if(window.confirm(Languages[lang].deleteQuesion)) {
             const data = {
-                dic_id : selectedRow.dic_id,
-                eng_id : selectedRow.eng_id,
-                mon_id : selectedRow.mon_id,
+                meanId : selectedRow.mean_id,
+                wordId : selectedRow.word_id,
             };
             ApiService.request("/api/manage/delete", {
                 method: "POST",
@@ -156,14 +155,14 @@ export default function Manage() {
 
     const handleModalSave = (e) => {
 
-        if(!firstWord || !secondWord) {
+        if(!word || !definition) {
             alert(Languages[lang].enterWords);
             return;
         }
 
         const data = {
-            eng_word : firstWord,
-            mon_word : secondWord,
+            word : word,
+            definition : definition,
         };
 
         let url = "/create";
@@ -171,8 +170,8 @@ export default function Manage() {
             url = "/update"; 
             
             const selectedRow = getSelectedRow();
-            data.eng_id = selectedRow.eng_id;
-            data.mon_id = selectedRow.mon_id;
+            data.wordId = selectedRow.word_id;
+            data.meanId = selectedRow.mean_id;
         }
 
         ApiService.request("/api/manage" + url, {
@@ -187,7 +186,7 @@ export default function Manage() {
     }
 
     const getData = () => {
-        ApiService.request("/api/manage/select", {
+        ApiService.request("/api/manage/selectByUserId", {
             method: "GET",
         })
             .then((response) => response.json())
@@ -202,20 +201,20 @@ export default function Manage() {
     const getSelectedRow = () => {
         const id = [...selectionModel.ids][0];
         if (!id) return null;
-        return dataList.find(r => r.dic_id === id);
+        return dataList.find(r => r.word_id === id);
     };
 
     const columns = [
-        { field: "eng_word", headerName: "English", flex: 1 },
-        { field: "mon_word", headerName: "Mongolian", flex: 1 },
+        { field: "word", headerName: "English", flex: 1 },
+        { field: "definition", headerName: "Mongolian", flex: 1 },
     ];
 
     const filteredList = React.useMemo(() => {
         return dataList.filter((item) => {
             if (!searchText) return true;
             return (
-                item.eng_word.toLowerCase().includes(searchText) ||
-                item.mon_word.toLowerCase().includes(searchText)
+                item.word.toLowerCase().includes(searchText) ||
+                item.definition.toLowerCase().includes(searchText)
             );
         });
     }, [searchText, dataList]);
@@ -277,7 +276,7 @@ export default function Manage() {
 
             <Box sx={{ flex: 1, minHeight: 0, height: "100%", }}>
                 <DataGrid
-                    getRowId={(row) => row.dic_id || null}
+                    getRowId={(row) => row.word_id || null}
                     rows={filteredList}
                     columns={columns}
                     disableColumnMenu
@@ -312,8 +311,8 @@ export default function Manage() {
 
                 {/* Inputs */}
                 <Stack spacing={2}>
-                    <TextField placeholder="English" fullWidth value={firstWord} onChange={(e) => setFirstWord(e.target.value)} autoFocus />
-                    <TextField placeholder="Mongolian" fullWidth value={secondWord} onChange={(e) => setSecondWord(e.target.value)}/>
+                    <TextField placeholder="English" fullWidth value={word} onChange={(e) => setWord(e.target.value)} autoFocus />
+                    <TextField placeholder="Mongolian" fullWidth value={definition} onChange={(e) => setDefinition(e.target.value)}/>
                 </Stack>
 
                 {/* Buttons */}
