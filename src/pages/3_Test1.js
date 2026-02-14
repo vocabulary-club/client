@@ -9,6 +9,7 @@ import { Box, Paper, Stack, Typography,
     InputLabel, Select, MenuItem,
     LinearProgress  } from "@mui/material";
 import { useTheme, useMediaQuery } from "@mui/material";
+import WordSelectBox from "../components/MySelectBox.js";
 
 export default function Test1() {
 
@@ -31,10 +32,12 @@ export default function Test1() {
     const intervalIdRef = React.useRef(null);
 
     const [dataList, setDataList] = React.useState([]);
+    const [dateGroup, setDateGroup] = React.useState([]);
 
     React.useEffect(() => {
 
         getData();
+        getDateGroup();
 
     }, []);
 
@@ -96,8 +99,21 @@ export default function Test1() {
             method: "GET",
         })
             .then((response) => response.json())
-            .then((data) => {            
+            .then((data) => {
                 originDataRef.current = data;
+            })
+            .catch((error) => {
+                console.error("Request failed:", error.message);
+            });
+    };
+
+    const getDateGroup = () => {return;
+        ApiService.request("/api/test/selectDate", {
+            method: "GET",
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setDateGroup(data);
             })
             .catch((error) => {
                 console.error("Request failed:", error.message);
@@ -113,6 +129,8 @@ export default function Test1() {
             shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 10);
         } else if(limit.includes("r50")) {
             shuffledDataRef.current = shuffle(originDataRef.current).slice(0, 50);
+        } else {
+            shuffledDataRef.current = shuffle(originDataRef.current.filter(x => x.reg_ymd === limit));
         }
     }
 
@@ -177,19 +195,7 @@ export default function Test1() {
                     </Stack>
 
                     {/* LIMIT */}
-                    <FormControl size="small" sx={{ minWidth: 200 }}>
-                    <InputLabel>Choose words</InputLabel>
-                    <Select
-                        label="Choose words"
-                        value={limit}
-                        onChange={(e) => setLimit(e.target.value)}
-                    >
-                        <MenuItem value="l10">Latest 10 words</MenuItem>
-                        <MenuItem value="r10">Random 10 words</MenuItem>
-                        <MenuItem value="l50">Latest 50 words</MenuItem>
-                        <MenuItem value="r50">Random 50 words</MenuItem>
-                    </Select>
-                    </FormControl>
+                    <WordSelectBox limit={limit} setLimit={setLimit} dateGroup={dateGroup} />
 
                     {/* TIME */}
                     <FormControl size="small" sx={{ minWidth: 150 }}>

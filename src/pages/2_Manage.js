@@ -178,9 +178,13 @@ export default function Manage() {
             method: "POST",
             body: JSON.stringify(data),
         })
-        .then((response) => response.json())
+        .then((response) => { 
+            if(response.ok) {
+                return response.json();
+            }            
+        })
         .then((data) => { getData(); })
-        .catch((error) => { alert(Languages[lang].failed); });
+        .catch((error) => { debugger; alert(Languages[lang].failed); });
 
         setModalOpen(false);
     }
@@ -207,7 +211,7 @@ export default function Manage() {
     const columns = [
         { field: "word", headerName: "Word", flex: 1 },
         { field: "definition", headerName: "Definition", flex: 1 },
-        { field: "reg_ymd", headerName: "Date", maxWidth: 124, },
+        // { field: "reg_ymd", headerName: "Date", maxWidth: 124, },
     ];
 
     const filteredList = React.useMemo(() => {
