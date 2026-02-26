@@ -68,7 +68,7 @@ export default function Login() {
                         {Languages[lang].googleLogin}
                     </Button>
 
-                    <Button
+                    {/* <Button
                         variant="outlined"
                         startIcon={<FacebookIcon />}
                         fullWidth
@@ -79,7 +79,7 @@ export default function Login() {
                         }}
                     >
                         {Languages[lang].facebookLogin}
-                    </Button>
+                    </Button> */}
                 </Box>
 
             </Paper>
