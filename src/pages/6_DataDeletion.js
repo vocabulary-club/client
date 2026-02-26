@@ -71,12 +71,12 @@ export default function DataDeletion() {
                             </Typography>
 
                             <Link
-                                href="https://shineug.com/user"
+                                href="https://www.shineug.com/user"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/user
+                                https://www.shineug.com/user
                             </Link>
                         </Box>
 
@@ -138,12 +138,12 @@ export default function DataDeletion() {
                             </Typography>
 
                             <Link
-                                href="https://shineug.com/user"
+                                href="https://www.shineug.com/user"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/user
+                                https://www.shineug.com/user
                             </Link>
                         </Box>
 

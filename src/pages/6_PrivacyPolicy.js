@@ -71,7 +71,7 @@ export default function PrivacyPolicy() {
 
                             <Typography paragraph sx={{ textAlign: "justify", }}>
                                 For cybersecurity and privacy reasons, the system does not store your confidential
-                                personal information (such as passwords), and you may log in using Google or Facebook Login.
+                                personal information (such as passwords), and you may log in using Google Login.
                             </Typography>
                         </Box>
 
@@ -81,7 +81,7 @@ export default function PrivacyPolicy() {
                                 Information Required at Login
                             </Typography>
                             <Typography paragraph sx={{ textAlign: "justify", }}>
-                                When you log in using a Google or Facebook account, the following information may be collected:
+                                When you log in using a Google account, the following information may be collected:
                             </Typography>
 
                             <List dense>
@@ -141,12 +141,12 @@ export default function PrivacyPolicy() {
                             </Typography>
 
                             <Link
-                                href="https://shineug.com/data-deletion"
+                                href="https://www.shineug.com/data-deletion"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/data-deletion
+                                https://www.shineug.com/data-deletion
                             </Link>
                         </Box>
 
@@ -160,12 +160,12 @@ export default function PrivacyPolicy() {
                             </Typography>
                             
                             <Link
-                                href="https://shineug.com/term-of-service"
+                                href="https://www.shineug.com/term-of-service"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/term-of-service
+                                https://www.shineug.com/term-of-service
                             </Link>
                         </Box>
 
@@ -229,7 +229,7 @@ export default function PrivacyPolicy() {
 
                             <Typography paragraph sx={{ textAlign: "justify", }}>
                                 Цахим аюулгүй байдлын үүднээс системд таны хувийн нууц мэдээллийг (нууц дугаар) 
-                                хадгалахгүй ба Google болон Facebook Login ашиглан нэвтрэх боломжтой.
+                                хадгалахгүй ба Google Login ашиглан нэвтрэх боломжтой.
                             </Typography>
                         </Box>
 
@@ -239,7 +239,7 @@ export default function PrivacyPolicy() {
                                 Нэвтрэх үед шаардлагатай мэдээлэл
                             </Typography>
                             <Typography paragraph sx={{ textAlign: "justify", }}>
-                                Google болон Facebook хаягаар нэвтрэх үед дараах мэдээллийг цуглуулах болно:
+                                Google хаягаар нэвтрэх үед дараах мэдээллийг цуглуулах болно:
                             </Typography>
 
                             <List dense>
@@ -299,12 +299,12 @@ export default function PrivacyPolicy() {
                             </Typography>
 
                             <Link
-                                href="https://shineug.com/data-deletion"
+                                href="https://www.shineug.com/data-deletion"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/data-deletion
+                                https://www.shineug.com/data-deletion
                             </Link>
                         </Box>
 
@@ -318,12 +318,12 @@ export default function PrivacyPolicy() {
                             </Typography>
                             
                             <Link
-                                href="https://shineug.com/term-of-service"
+                                href="https://www.shineug.com/term-of-service"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/term-of-service
+                                https://www.shineug.com/term-of-service
                             </Link>
                         </Box>
 

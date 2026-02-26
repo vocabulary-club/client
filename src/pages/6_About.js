@@ -46,7 +46,7 @@ export default function About() {
 
                             <Typography paragraph sx={{ textAlign: "justify", }}>
                                 For cybersecurity and privacy reasons, the system does not store your confidential
-                                personal information (such as passwords), and you may log in using Google or Facebook Login.
+                                personal information (such as passwords), and you may log in using Google Login.
                             </Typography>
                         </Box>
 
@@ -75,7 +75,7 @@ export default function About() {
 
                             <Typography paragraph sx={{ textAlign: "justify", }}>
                                 Цахим аюулгүй байдлын үүднээс системд таны хувийн нууц мэдээллийг (нууц дугаар) 
-                                хадгалахгүй ба Google болон Facebook Login ашиглан нэвтрэх боломжтой.
+                                хадгалахгүй ба Google Login ашиглан нэвтрэх боломжтой.
                             </Typography>
                         </Box>
 

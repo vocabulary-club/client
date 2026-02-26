@@ -91,7 +91,7 @@ export default function TermsOfService() {
 
                             <List dense>
                                 <ListItem>
-                                    <ListItemText primary="Login using Google and Facebook accounts" />
+                                    <ListItemText primary="Login using Google account" />
                                 </ListItem>
                                 <ListItem>
                                     <ListItemText primary="Add, edit, and delete new words" />
@@ -133,12 +133,12 @@ export default function TermsOfService() {
                             </Typography>
                             
                             <Link
-                                href="https://shineug.com/privacy-policy"
+                                href="https://www.shineug.com/privacy-policy"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/privacy-policy
+                                https://www.shineug.com/privacy-policy
                             </Link>
                         </Box>
 
@@ -169,7 +169,7 @@ export default function TermsOfService() {
                                 Third-Party Services
                             </Typography>
                             <Typography paragraph sx={{ textAlign: "justify", }}>
-                                Our app uses Google OAuth2 and Facebook OAuth2, and we 
+                                Our app uses Google OAuth2 and we 
                                 recommend reviewing their respective terms and policies.
                             </Typography>                            
                         </Box>
@@ -261,7 +261,7 @@ export default function TermsOfService() {
 
                             <List dense>
                                 <ListItem>
-                                    <ListItemText primary="Google болон Facebook хаягаар нэвтрэх" />
+                                    <ListItemText primary="Google хаягаар нэвтрэх" />
                                 </ListItem>
                                 <ListItem>
                                     <ListItemText primary="Шинэ үг нэмэх, засах болон устгах" />
@@ -303,12 +303,12 @@ export default function TermsOfService() {
                             </Typography>
                             
                             <Link
-                                href="https://shineug.com/privacy-policy"
+                                href="https://www.shineug.com/privacy-policy"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 underline="hover"
                             >
-                                https://shineug.com/privacy-policy
+                                https://www.shineug.com/privacy-policy
                             </Link>
                         </Box>
 
@@ -339,7 +339,7 @@ export default function TermsOfService() {
                                 Гуравдагч этгээдийн үйлчилгээ
                             </Typography>
                             <Typography paragraph sx={{ textAlign: "justify", }}>
-                                Манай апп Google-ийн OAuth2 болон Facebook-ийн OAuth2 ашигладаг 
+                                Манай апп Google-ийн OAuth2 ашигладаг 
                                 бөгөөд эдгээрийн нөхцөлтэй танилцахыг зөвлөж байна.
                             </Typography>                            
                         </Box>
