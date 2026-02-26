@@ -92,18 +92,12 @@ export default function Login() {
                         startIcon={<DescriptionIcon />}
                         fullWidth
                         component="a"
-                        sx={{
-                            textTransform: "none",
-                        }}
+                        href="https://shineug.com/term-of-service"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ textTransform: "none" }}
                     >
-                        <Link
-                            href="https://shineug.com/term-of-service"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline="hover"
-                        >
-                            {Languages[lang].termOfService}
-                        </Link>                        
+                        {Languages[lang].termOfService} 
                     </Button>
 
                     <Button
@@ -111,18 +105,12 @@ export default function Login() {
                         startIcon={<PrivacyTipIcon />}
                         fullWidth
                         component="a"
-                        sx={{
-                            textTransform: "none",
-                        }}
+                        href="https://shineug.com/privacy-policy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ textTransform: "none" }}
                     >
-                        <Link
-                            href="https://shineug.com/privacy-policy"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline="hover"
-                        >
-                            {Languages[lang].privacyPolicy}
-                        </Link>                        
+                        {Languages[lang].privacyPolicy}
                     </Button>
                 </Box>
 
